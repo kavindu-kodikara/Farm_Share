@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/orange"> <!-- Set the color of the ripple effect -->
+    <item android:drawable="@android:color/transparent"/> <!-- Background color when ripple is inactive -->
+</ripple>

@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Farm Share</string>
+    <string name="landing_title">Welcome to Farm Share</string>
+    <string name="landing_description">Invest in thriving farms or grow your own with ease!</string>
+    <string name="landing_txt1">Register as</string>
+
+    <string name="farmer">Farmer</string>
+    <string name="investor">Investor</string>
+    <string name="createAccount">Create Account</string>
+    <string name="farmerSignupTxt">Sign up to connect with investors and grow your farm!</string>
+
+    <string name="login">Log In</string>
+    <string name="farmerSigninTxt">Welcome back! Sign in to manage your farm and investments.</string>
+
+    <string name="mobile">Mobile</string>
+    <string name="fname">First Name</string>
+    <string name="lname">Last Name</string>
+    <string name="password">Password</string>
+    <string name="conform_password">Conform Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="signup_txt1">Already have an account?</string>
+    <string name="signup_txt2">Sign In</string>
+    <string name="signin_txt1">Dont have an account?</string>
+    <string name="signin_txt2">Sign Up</string>
+    <string name="review">Review</string>
+
+    <string name="mobile_hint">Enter your mobile number</string>
+    <string name="fname_hint">Enter your first name</string>
+    <string name="last_hint">Enter your last name</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="password_conform_hint">Re-type your password</string>
+
+    <string name="investorSignupTxt">Sign up to invest in farms and enjoy exclusive harvest returns!</string>
+    <string name="investorSignInTxt">Welcome back! Access your investments and track your returns</string>
+
+    <!--    Farmer Home Fragment-->
+    <string name="letast_notification">Latest Notification Today</string>
+    <string name="test_Risk_Score">85</string>
+    <string name="test_Risk_Score_text">good hands</string>
+    <string name="test_Risk_Score_text_risk">Your farm is at</string>
+    <string name="test_Risk_Score_text_good">Your farm is in</string>
+    <string name="risk_score">Risk score</string>
+
+    <string name="test_farm_name">Farm name</string>
+    <string name="test_farm_harvesting">Harvesting</string>
+    <string name="farm_total_stock">Total Stock :-</string>
+    <string name="farm_released_stock">Released Stock :-</string>
+    <string name="farm_income">Income :-</string>
+    <string name="test_farm_stock">1000</string>
+    <string name="test_farm__released_stock">500</string>
+    <string name="test_farm_income">Rs.200,000</string>
+    <string name="test_farm_date">05 February 2025</string>
+    <string name="test_farm_stock_progtess">S 250</string>
+    <string name="test_farm_stock_text">Halfway there!</string>
+    <string name="test_farm_investors_count">12 Total</string>
+    <string name="farm_investment_progress">Investment Progress</string>
+    <string name="farm_investors">Investors</string>
+    <string name="farm_investor_name">Investor name</string>
+    <string name="farm_stock">Stocks</string>
+    <string name="farm_amount">Amount</string>
+
+    <string name="test_farm_stock_count">100</string>
+    <string name="test_farm_amount">2000</string>
+
+    <!--    Farm farms Fragment-->
+    <string name="farms_search_hint">Search Farm</string>
+    <string name="farms_title">My Farms</string>
+    <string name="farms_chart_title">Stock Price Trends</string>
+    <string name="farms_chart_title2">(Last 7 Days)</string>
+
+<!--    Add farm-->
+    <string name="add_farm_title">Add new farm</string>
+
+</resources>
