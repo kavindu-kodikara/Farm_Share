@@ -1,16 +1,23 @@
 package com.kavindu.farmshare.farmer;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -22,6 +29,7 @@ import com.timqi.sectorprogressview.ColorfulRingProgressView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class FarmerHomeFragment extends Fragment {
@@ -65,15 +73,21 @@ public class FarmerHomeFragment extends Fragment {
         LinearLayout farmProgressButton = view.findViewById(R.id.farmProgressButton);
         TextView farmProgressText = view.findViewById(R.id.farmProgressText);
 
-        farmProgressButton.setBackground(ContextCompat.getDrawable(view.getContext(),R.drawable.gradient_cultivating));
-        farmProgressText.setText("Cultivating");
+        farmProgressButton.setBackground(ContextCompat.getDrawable(view.getContext(),R.drawable.gradient_start));
+
+        farmProgressText.setText("Start");
 
         farmProgressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String progress = farmProgressText.getText().toString();
-                if(progress.equals("Cultivating")){
+                if(progress.equals("Start")){
+
+                    farmProgressButton.setBackground(ContextCompat.getDrawable(view.getContext(),R.drawable.gradient_cultivating));
+                    farmProgressText.setText("Cultivating");
+
+                } else if(progress.equals("Cultivating")){
 
                     farmProgressButton.setBackground(ContextCompat.getDrawable(view.getContext(),R.drawable.gradient_planting));
                     farmProgressText.setText("Planting");
@@ -95,8 +109,8 @@ public class FarmerHomeFragment extends Fragment {
 
                 } else if (progress.equals("Complete")) {
 
-                    farmProgressButton.setBackground(ContextCompat.getDrawable(view.getContext(),R.drawable.gradient_cultivating));
-                    farmProgressText.setText("Cultivating");
+                    farmProgressButton.setBackground(ContextCompat.getDrawable(view.getContext(),R.drawable.gradient_start));
+                    farmProgressText.setText("Start");
 
                 }
 
@@ -143,6 +157,34 @@ public class FarmerHomeFragment extends Fragment {
         xAxis.setDrawGridLines(false);
 
 
+        //soil repost document
+        AtomicReference<Uri> soilReportFileUri = new AtomicReference<>();
+
+        ImageView soilReportBtn = view.findViewById(R.id.homeSoilReportimageView);
+
+        ActivityResultLauncher<String> soilReportfilePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        soilReportFileUri.set(uri);
+                        Toast.makeText(view.getContext(), "Soil report file Selected: " + uri.getLastPathSegment(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        soilReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                soilReportfilePickerLauncher.launch("*/*");
+            }
+        });
+
+        Button riskReviewButton = view.findViewById(R.id.riskReviewButton);
+        riskReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),FarmerRiskReviewActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
 
 
         return view;

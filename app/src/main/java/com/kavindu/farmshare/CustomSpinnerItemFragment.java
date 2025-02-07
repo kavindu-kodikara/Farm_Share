@@ -1,4 +1,4 @@
-package com.kavindu.farmshare.farmer;
+package com.kavindu.farmshare;
 
 import android.os.Bundle;
 
@@ -8,24 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kavindu.farmshare.R;
+public class CustomSpinnerItemFragment extends Fragment {
 
 
-public class FarmerProfileFragment extends Fragment {
 
-
-    public FarmerProfileFragment() {
+    public CustomSpinnerItemFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_farmer_profile, container, false);
-
-        return view;
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_custom_spinner_item, container, false);
     }
 }

@@ -3,6 +3,8 @@
     <string name="landing_title">Welcome to Farm Share</string>
     <string name="landing_description">Invest in thriving farms or grow your own with ease!</string>
     <string name="landing_txt1">Register as</string>
+    <string name="my_profile_titlr">My profile</string>
+    <string name="save">Save</string>
 
     <string name="farmer">Farmer</string>
     <string name="investor">Investor</string>
@@ -68,7 +70,39 @@
     <string name="farms_chart_title">Stock Price Trends</string>
     <string name="farms_chart_title2">(Last 7 Days)</string>
 
-<!--    Add farm-->
+    <!--    Add farm-->
     <string name="add_farm_title">Add new farm</string>
+    <string name="add_farm_farm_name">Enter farm name</string>
+    <string name="add_farm_farm_size">Farm Size</string>
+    <string name="add_farm_farm_size_hint">2.5 ha</string>
+    <string name="add_farm_avg_income">Avg Income</string>
+    <string name="add_farm_avg_income_hint">2500 Kg</string>
+    <string name="add_farm_min_stock">Min Invest</string>
+    <string name="add_farm_min_stock_hint">S 10</string>
+    <string name="add_farm_description">Farm Description</string>
+    <string name="add_farm_description_hint">A brief description about your farm</string>
+    <string name="add_farm_nic">Owner NIC</string>
+    <string name="add_farm_nic_front">Front</string>
+    <string name="add_farm_nic_back">Back</string>
+    <string name="add_farm_ownership_doc">Farm ownership document</string>
+    <string name="add_farm_ownership_doc_description">Upload a valid document proving farm ownership</string>
+    <string name="add_farm_record_doc">Farm Output Record</string>
+    <string name="add_farm_record_doc_description">A valid document showing farm analysis for the last 2 years</string>
+    <string name="add_farm_soil_doc">Farm Soil Report</string>
+    <string name="add_farm_soil_doc_description">A valid soil analysis report obtained within the last 2 weeks</string>
+    <string name="add_farm_soil_doc_description2">Upload valid soil analysis report update</string>
+    <string name="add_farm_nic_number">Owner NIC number</string>
+    <string name="add_farm_location">Farm Location</string>
+    <string name="add_farm_media">Media</string>
+    <string name="add_farm_submit">Submit</string>
+
+    <!--    farmer profile-->
+    <string name="farmer_profile_titlr">My profile</string>
+
+<!--    farmer risk review-->
+    <string name="farmer_risk_review_title">Risk review</string>
+    <string name="farmer_risk_review_weather">Weather condition</string>
+    <string name="farmer_risk_review_weather_text">Last 7 days</string>
+    <string name="farmer_risk_review_soil">Soil condition</string>
 
 </resources>

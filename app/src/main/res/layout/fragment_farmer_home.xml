@@ -229,7 +229,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/riskReviewButton"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginStart="24dp"
@@ -259,7 +259,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                 <ImageView
-                    android:id="@+id/imageView8"
+                    android:id="@+id/imageViewSelected"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="24dp"
@@ -280,7 +280,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewSelected"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
@@ -299,7 +299,7 @@
                     android:paddingBottom="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView8">
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewSelected">
 
                     <TextView
                         android:id="@+id/farmProgressText"
@@ -497,14 +497,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="100dp"
                 android:background="@drawable/white_background"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
@@ -742,6 +741,56 @@
                     app:layout_constraintStart_toEndOf="@+id/textView42"
                     app:layout_constraintTop_toTopOf="@+id/textView42" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="100dp"
+                android:background="@drawable/white_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+
+                <TextView
+                    android:id="@+id/textView63"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/add_farm_soil_doc"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView64"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/add_farm_soil_doc_description2"
+                    android:textColor="@color/textGray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView63" />
+
+                <ImageView
+                    android:id="@+id/homeSoilReportimageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView64"
+                    app:srcCompat="@drawable/addfolder" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Other UI elements can go here -->
