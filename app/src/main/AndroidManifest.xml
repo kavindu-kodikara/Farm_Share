@@ -16,6 +16,9 @@
         android:theme="@style/Theme.FarmShare"
         tools:targetApi="31">
         <activity
+            android:name=".investor.InvestorMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".farmer.FarmerRiskReviewActivity"
             android:exported="false" />
         <activity

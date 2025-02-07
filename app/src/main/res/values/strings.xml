@@ -95,14 +95,41 @@
     <string name="add_farm_location">Farm Location</string>
     <string name="add_farm_media">Media</string>
     <string name="add_farm_submit">Submit</string>
+    <string name="add_farm_code_name">Code Name</string>
+    <string name="add_farm_code_name_description">Unique name for your farm</string>
 
     <!--    farmer profile-->
     <string name="farmer_profile_titlr">My profile</string>
 
-<!--    farmer risk review-->
+    <!--    farmer risk review-->
     <string name="farmer_risk_review_title">Risk review</string>
     <string name="farmer_risk_review_weather">Weather condition</string>
     <string name="farmer_risk_review_weather_text">Last 7 days</string>
     <string name="farmer_risk_review_soil">Soil condition</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_investor_main">InvestorMainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+
+    <!--    Investor Home-->
+    <string name="investor_home_1">Hi,</string>
+    <string name="investor_home_2">Fname</string>
+    <string name="investor_home_3">Have a grate day!</string>
+    <string name="investor_home_4">Hot</string>
+    <string name="investor_home_5">My investments</string>
+    <string name="investor_home_6">+2.5%</string>
+    <string name="investor_home_7">DRGF</string>
+    <string name="investor_home_8">Rs.150</string>
 </resources>

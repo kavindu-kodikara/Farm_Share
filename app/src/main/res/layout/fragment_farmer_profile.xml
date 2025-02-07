@@ -30,23 +30,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/profileNotificationimage"
+            android:id="@+id/logoutImageView"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="24dp"
-            android:src="@drawable/notification_nav"
+            android:src="@drawable/logout"
             app:layout_constraintBottom_toBottomOf="@+id/profileTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileTitle"
             app:tint="@color/darkGray" />
-
-        <ImageView
-            android:id="@+id/profileNotificationAlertImage"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/red_circle"
-            app:layout_constraintEnd_toEndOf="@+id/profileNotificationimage"
-            app:layout_constraintTop_toTopOf="@+id/profileNotificationimage" />
 
 
         <View

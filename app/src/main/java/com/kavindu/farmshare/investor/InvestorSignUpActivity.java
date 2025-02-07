@@ -49,6 +49,16 @@ public class InvestorSignUpActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout buttonSignUp = findViewById(R.id.ISignUpsignUpButton);
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InvestorSignUpActivity.this,InvestorMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override

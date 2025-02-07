@@ -6,4 +6,13 @@
     </style>
 
     <style name="Theme.FarmShare" parent="Base.Theme.FarmShare" />
+
+    <style name="Theme.FarmShare.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.FarmShare.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.FarmShare.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
