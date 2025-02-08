@@ -3,9 +3,6 @@ package com.kavindu.farmshare.investor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,8 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.kavindu.farmshare.R;
-import com.kavindu.farmshare.farmer.FarmerHomeFragment;
-import com.kavindu.farmshare.farmer.FarmerProfileFragment;
 
 public class InvestorMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,33 +38,19 @@ public class InvestorMainActivity extends AppCompatActivity implements Navigatio
             return insets;
         });
 
-        // Initialize Views
-//        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.setCheckedItem(R.id.nav_home);
 
         // Setup Drawer Toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Set user data in navigation header
-        View headerView = navigationView.getHeaderView(0);
-        TextView userName = headerView.findViewById(R.id.user_name);
-        TextView userEmail = headerView.findViewById(R.id.user_email);
-        userName.setText("Kavindu");
-        userEmail.setText("kavindu@example.com");
 
-//        Button btnOpenDrawer = findViewById(R.id.btn_open_drawer);
-//        btnOpenDrawer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                openDrawer();
-//            }
-//        });
+
 
         // Load Default Fragment
         getSupportFragmentManager().beginTransaction()
@@ -87,9 +68,12 @@ public class InvestorMainActivity extends AppCompatActivity implements Navigatio
         if (id == R.id.nav_home) {
 
             transaction.replace(R.id.content_frame, new InvestorHomeFragment());
-        } else if (id == R.id.nav_investments) {
+            navigationView.setCheckedItem(R.id.nav_home);
+        } else if (id == R.id.nav_farms) {
 
-            transaction.replace(R.id.content_frame, new FarmerProfileFragment());
+            Intent intent = new Intent(InvestorMainActivity.this,InvestorFarmsActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_profile) {
 
         } else if (id == R.id.nav_logout) {
@@ -107,4 +91,6 @@ public class InvestorMainActivity extends AppCompatActivity implements Navigatio
     public void openDrawer() {
         drawerLayout.openDrawer(GravityCompat.START);
     }
+
+
 }

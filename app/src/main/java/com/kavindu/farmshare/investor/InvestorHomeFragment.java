@@ -1,6 +1,7 @@
 package com.kavindu.farmshare.investor;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -15,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.kavindu.farmshare.R;
@@ -26,6 +29,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.kavindu.farmshare.model.InvestItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,19 @@ public class InvestorHomeFragment extends Fragment {
             }
         });
 
+        ImageView farmButton = view.findViewById(R.id.imageView17);
+        farmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(view.getContext(),InvestorFarmsActivity.class);
+                view.getContext().startActivity(intent);
+
+            }
+        });
+
+
+
 
         RecyclerView hotItemRecyclerView = view.findViewById(R.id.hotItemRecyclerView);
 
@@ -68,9 +85,6 @@ public class InvestorHomeFragment extends Fragment {
         hotItemRecyclerView.setAdapter(new HotItemAdapter(hotItemList));
 
 
-        LineChart lineChart1 = view.findViewById(R.id.riskLineChart1);
-        LineChart lineChart2 = view.findViewById(R.id.riskLineChart2);
-
         List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(1990, 60));
         entries.add(new Entry(1994, 30));
@@ -82,41 +96,87 @@ public class InvestorHomeFragment extends Fragment {
         entries.add(new Entry(2018, 80));
         entries.add(new Entry(2022, 120));
 
-        LineDataSet dataSet = new LineDataSet(entries, "");
-        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        dataSet.setColor(Color.parseColor("#7AF27B"));
-        dataSet.setCircleColor(Color.parseColor("#7AF27B"));
-        dataSet.setLineWidth(2f);
-        dataSet.setDrawFilled(true);
-        dataSet.setFillDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.gradient_farmer_chart));
-        dataSet.setDrawValues(false);
+        ArrayList<InvestItem> investItemArrayList = new ArrayList<>();
+        investItemArrayList.add(new InvestItem("1","Rice","FDER","+2.5%","Rs.250",false,entries));
+        investItemArrayList.add(new InvestItem("1","Corn","KTYG","-1.5%","Rs.120",true,entries));
 
-        LineData lineData = new LineData(dataSet);
-        lineChart1.setData(lineData);
-        lineChart1.invalidate();
+        ArrayList<InvestItem> popularItemArrayList = new ArrayList<>();
+        popularItemArrayList.add(new InvestItem("1","Corn","HJUT","+2.5%","Rs.250",false,entries));
+        popularItemArrayList.add(new InvestItem("1","Rice","LAGR","-1.5%","Rs.120",true,entries));
+        popularItemArrayList.add(new InvestItem("1","Rice","SRTY","+0.5%","Rs.320",false,entries));
 
-        lineChart1.getDescription().setEnabled(false);
-        lineChart1.getXAxis().setDrawLabels(false);
-        lineChart1.getAxisLeft().setDrawLabels(false);
-        lineChart1.getAxisRight().setEnabled(false);
-        lineChart1.getXAxis().setDrawGridLines(false);
-        lineChart1.getAxisLeft().setDrawGridLines(false);
-        lineChart1.getLegend().setEnabled(false);
-
-        lineChart2.setData(lineData);
-        lineChart2.invalidate();
-
-        lineChart2.getDescription().setEnabled(false);
-        lineChart2.getXAxis().setDrawLabels(false);
-        lineChart2.getAxisLeft().setDrawLabels(false);
-        lineChart2.getAxisRight().setEnabled(false);
-        lineChart2.getXAxis().setDrawGridLines(false);
-        lineChart2.getAxisLeft().setDrawGridLines(false);
-        lineChart2.getLegend().setEnabled(false);
+        investItemInflater(R.id.popularItemLinearLayout,view,popularItemArrayList);
+        investItemInflater(R.id.myItemLinearLayout,view,investItemArrayList);
 
 
         return view;
     }
+
+    private void investItemInflater(int container, View parent, ArrayList<InvestItem> itemArrayList){
+
+        LinearLayout itemContainer = parent.findViewById(container);
+
+        for (InvestItem investItem : itemArrayList){
+
+            View item = getLayoutInflater().inflate(R.layout.fragment_investor_invest__item,null);
+
+            ImageView image = item.findViewById(R.id.itemDesignimageView22);
+            TextView title = item.findViewById(R.id.itemDesigntextView76);
+            TextView value = item.findViewById(R.id.itemDesigntextView78);
+            TextView price = item.findViewById(R.id.itemDesigntextView79);
+            LineChart chart = item.findViewById(R.id.itemDesignriskLineChart1);
+            ConstraintLayout itemButton = item.findViewById(R.id.itemDesignconstraintLayout8);
+
+            title.setText(investItem.getTitle());
+            price.setText(investItem.getPrice());
+
+            if(investItem.getType().equals("Rice")){
+                image.setImageResource(R.drawable.rice);
+            }else if(investItem.getType().equals("Corn")){
+                image.setImageResource(R.drawable.corn);
+            }
+
+            LineDataSet dataSet = new LineDataSet(investItem.getChartData(), "");
+            dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+            dataSet.setLineWidth(2f);
+            dataSet.setDrawFilled(true);
+            dataSet.setDrawValues(false);
+            dataSet.setDrawCircles(false);
+
+            if (investItem.isLost()) {
+                value.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.red));
+                dataSet.setColor(Color.parseColor("#f27a7a"));
+                dataSet.setFillDrawable(ContextCompat.getDrawable(parent.getContext(), R.drawable.gradient_farmer_chart_red));
+            } else {
+                value.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.green));
+                dataSet.setColor(Color.parseColor("#7AF27B"));
+                dataSet.setFillDrawable(ContextCompat.getDrawable(parent.getContext(), R.drawable.gradient_farmer_chart));
+            }
+
+            LineData lineData = new LineData(dataSet);
+            chart.setData(lineData);
+            chart.invalidate();
+
+            chart.getDescription().setEnabled(false);
+            chart.getLegend().setEnabled(false);
+            chart.getXAxis().setEnabled(false);
+            chart.getAxisLeft().setEnabled(false);
+            chart.getAxisRight().setEnabled(false);
+
+
+            itemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(parent.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            itemContainer.addView(item);
+
+        }
+
+    }
+
 }
 
 class HotItemAdapter extends RecyclerView.Adapter <HotItemAdapter.HotItemViewHolder>{

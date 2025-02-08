@@ -4,4 +4,11 @@
         <item name="android:background">@color/white</item>
         <item name="itemIconTint">@color/nav_icon_selector</item>
     </style>
+    <style name="NavItemTextAppearance" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">18sp</item> <!-- Set your desired text size here -->
+    </style>
+    <style name="CircleImageViewStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

@@ -13,4 +13,6 @@
     <color name="textGray">#7B7C80</color>
     <color name="red">#FF0000</color>
     <color name="yellow">#FFC107</color>
+    <color name="lite_white">#EAE9E5</color>
+    <color name="warm_white">#EE7D4D</color>
 </resources>

@@ -127,9 +127,17 @@
     <string name="investor_home_1">Hi,</string>
     <string name="investor_home_2">Fname</string>
     <string name="investor_home_3">Have a grate day!</string>
-    <string name="investor_home_4">Hot</string>
+    <string name="investor_home_4">Today\'s Hot</string>
     <string name="investor_home_5">My investments</string>
     <string name="investor_home_6">+2.5%</string>
     <string name="investor_home_7">DRGF</string>
     <string name="investor_home_8">Rs.150</string>
+    <string name="investor_home_9">Popular</string>
+    <string name="investor_home_10">Fname Lname</string>
+
+<!--    Investor farms-->
+    <string name="i_farms_1">Search for Farms</string>
+    <string name="i_farms_2">ADFR</string>
+    <string name="i_farms_3">Rice</string>
+    <string name="i_farms_4">Rs.250.00</string>
 </resources>

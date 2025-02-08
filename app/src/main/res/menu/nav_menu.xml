@@ -3,17 +3,18 @@
     <item
         android:id="@+id/nav_home"
         android:title="Home"
-        android:icon="@drawable/home_nav"/>
+        android:icon="@drawable/home_drv"
+        />
     <item
         android:id="@+id/nav_investments"
-        android:title="My Investments"
-        android:icon="@drawable/profile2"/>
+        android:title="Investments"
+        android:icon="@drawable/investment_drw"/>
     <item
-        android:id="@+id/nav_profile"
-        android:title="Profile"
-        android:icon="@drawable/user"/>
+        android:id="@+id/nav_farms"
+        android:title="Farms"
+        android:icon="@drawable/farm_nav"/>
     <item
         android:id="@+id/nav_logout"
         android:title="Logout"
-        android:icon="@drawable/profit"/>
+        android:icon="@drawable/logout"/>
 </menu>
