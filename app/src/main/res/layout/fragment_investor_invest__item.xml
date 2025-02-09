@@ -25,7 +25,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/white_background"
+            android:background="@drawable/type_background"
             android:padding="10dp"
             android:src="@drawable/corn"
             app:layout_constraintBottom_toBottomOf="parent"

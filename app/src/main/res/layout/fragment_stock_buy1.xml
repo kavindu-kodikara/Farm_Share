@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textView100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/i_single_farm_23"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView101"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/i_single_farm_3"
+        android:textColor="@color/textGray"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView102"
+        app:layout_constraintEnd_toStartOf="@+id/textView102" />
+
+    <TextView
+        android:id="@+id/textView102"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="bottom"
+        android:text="@string/i_single_farm_4"
+        android:textColor="@color/textGray"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView100" />
+
+    <TextView
+        android:id="@+id/textView103"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/i_single_farm_5"
+        android:textColor="@color/textGray"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView102"
+        app:layout_constraintStart_toEndOf="@+id/textView102" />
+
+    <LinearLayout
+        android:id="@+id/stockBuylinearLayout7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView102">
+
+        <ImageView
+            android:id="@+id/imageView105"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            app:srcCompat="@drawable/up_arrow" />
+
+        <TextView
+            android:id="@+id/textView106"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="@string/i_single_farm_6"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView107"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/i_single_farm_7"
+            android:textColor="@color/textGray"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/singleFarmBuyButton"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/gradient_orange"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stockBuylinearLayout7">
+
+        <TextView
+            android:id="@+id/textView104"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/i_single_farm_24"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

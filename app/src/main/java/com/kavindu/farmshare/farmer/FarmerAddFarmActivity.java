@@ -346,7 +346,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fragment_item_image, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_farm_image_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -365,7 +365,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
         ImageView imageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.singleImgeShapeableImageView);
         }
     }
 }

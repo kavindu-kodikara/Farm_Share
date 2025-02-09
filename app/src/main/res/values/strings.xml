@@ -135,9 +135,52 @@
     <string name="investor_home_9">Popular</string>
     <string name="investor_home_10">Fname Lname</string>
 
-<!--    Investor farms-->
+    <!--    Investor farms-->
     <string name="i_farms_1">Search for Farms</string>
     <string name="i_farms_2">ADFR</string>
     <string name="i_farms_3">Rice</string>
     <string name="i_farms_4">Rs.250.00</string>
+
+    <!--    Investor Single Farm-->
+    <string name="i_single_farm_1">FRTY</string>
+    <string name="i_single_farm_2">Farm Name</string>
+    <string name="i_single_farm_3">Rs.</string>
+    <string name="i_single_farm_4">278</string>
+    <string name="i_single_farm_5">.95</string>
+    <string name="i_single_farm_6">Rs.1.35 (2.51%)</string>
+    <string name="i_single_farm_7">Last Week</string>
+    <string name="i_single_farm_8">1 WEEK</string>
+    <string name="i_single_farm_9">1 MONTH</string>
+    <string name="i_single_farm_10">1 YEAR</string>
+    <string name="i_single_farm_11">Avg income</string>
+    <string name="i_single_farm_12">Rs.280,000.00</string>
+    <string name="i_single_farm_13">Risk score</string>
+    <string name="i_single_farm_14">Owner Name</string>
+    <string name="i_single_farm_15">40 years old</string>
+    <string name="i_single_farm_16">Land Size :</string>
+    <string name="i_single_farm_17">Avg Yield :</string>
+    <string name="i_single_farm_18">Current Season</string>
+    <string name="i_single_farm_19">Jan - May</string>
+    <string name="i_single_farm_20">2.5 ha</string>
+    <string name="i_single_farm_21">2500 kg</string>
+    <string name="i_single_farm_22">Images</string>
+    <string name="i_single_farm_23">Invest</string>
+    <string name="i_single_farm_24">Buy Stock</string>
+    <string name="i_single_farm_25">S 235</string>
+    <string name="i_single_farm_26">My Investment</string>
+    <string name="i_single_farm_27">25% of Shares</string>
+    <string name="i_single_farm_28">Expected income :</string>
+    <string name="i_single_farm_29">Rs. 250,000</string>
+    <string name="i_single_farm_30">Buy More</string>
+
+<!--    Buy Stock-->
+    <string name="i_buy_1">Buy FDGT</string>
+    <string name="i_buy_2">Farm name  :</string>
+    <string name="i_buy_3">Rs.134 / Stock</string>
+    <string name="i_buy_4">No. of Stocks</string>
+    <string name="i_buy_5">No. of Stocks</string>
+    <string name="i_buy_6">Total</string>
+    <string name="i_buy_7">Rs. 13,870 .00</string>
+    <string name="i_buy_8">Buy Now</string>
+    <string name="i_buy_9">10</string>
 </resources>

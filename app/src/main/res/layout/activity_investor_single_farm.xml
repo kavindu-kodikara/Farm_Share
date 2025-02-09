@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/liteGray"
+        tools:context=".investor.InvestorSingleFarmActivity">
+
+        <ImageView
+            android:id="@+id/investorSingleFarmBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/left_svgrepo_com"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/textGray" />
+
+        <ImageView
+            android:id="@+id/investorSingleFarmNotification"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="24dp"
+            android:src="@drawable/notification_nav"
+            app:layout_constraintBottom_toBottomOf="@+id/investorSingleFarmBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/investorSingleFarmBack"
+            app:tint="@color/darkGray" />
+
+        <ImageView
+            android:id="@+id/investorSingleFarmNotificationAlertImage"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/red_circle"
+            app:layout_constraintEnd_toEndOf="@+id/investorSingleFarmNotification"
+            app:layout_constraintTop_toTopOf="@+id/investorSingleFarmNotification" />
+
+        <TextView
+            android:id="@+id/textView81"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/i_single_farm_1"
+            android:textColor="@color/textGray"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView82"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/i_single_farm_2"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView81" />
+
+        <TextView
+            android:id="@+id/textView83"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/i_single_farm_3"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textView84"
+            app:layout_constraintEnd_toStartOf="@+id/textView84" />
+
+        <TextView
+            android:id="@+id/textView84"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="bottom"
+            android:text="@string/i_single_farm_4"
+            android:textColor="@color/black"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView82" />
+
+        <TextView
+            android:id="@+id/textView85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/i_single_farm_5"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textView84"
+            app:layout_constraintStart_toEndOf="@+id/textView84" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView83">
+
+            <ImageView
+                android:id="@+id/imageView24"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="5dp"
+                app:srcCompat="@drawable/up_arrow" />
+
+            <TextView
+                android:id="@+id/textView86"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/i_single_farm_6"
+                android:textColor="@color/green"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView87"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/i_single_farm_7"
+                android:textColor="@color/textGray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/singleFarmLineChart"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/singleFarmLineChart">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/i_single_farm_9"
+                    android:textColor="@color/chip_text_color"
+                    app:chipBackgroundColor="@color/chip_selector2"
+                    app:chipStrokeWidth="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="@string/i_single_farm_8"
+                    android:textColor="@color/chip_text_color"
+                    app:chipBackgroundColor="@color/chip_selector2"
+                    app:chipStrokeWidth="0dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/i_single_farm_10"
+                    android:textColor="@color/chip_text_color"
+                    app:chipBackgroundColor="@color/chip_selector2"
+                    app:chipStrokeWidth="0dp" />
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutRiskScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/white_background">
+
+
+                <ImageView
+                    android:id="@+id/investorSingleImageViewSelected"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/image_background"
+                    android:padding="10dp"
+                    android:src="@drawable/rice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView88"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/i_single_farm_11"
+                    android:textColor="@color/textGray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/investorSingleImageViewSelected" />
+
+                <TextView
+                    android:id="@+id/textView89"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/i_single_farm_12"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView88" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/white_background">
+
+                <com.timqi.sectorprogressview.ColorfulRingProgressView
+                    android:id="@+id/crpvInvestorSingle2"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    app:bgColor="@color/liteGray"
+                    app:fgColorEnd="@color/green"
+                    app:fgColorStart="#9DFF00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.504"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:percent="35"
+                    app:startAngle="0"
+                    app:strokeWidth="15dp" />
+
+                <com.timqi.sectorprogressview.ColorfulRingProgressView
+                    android:id="@+id/crpvInvestorSingle"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:bgColor="@color/liteGray"
+                    app:fgColorEnd="#ff4800"
+                    app:fgColorStart="#ffe400"
+                    app:layout_constraintBottom_toBottomOf="@+id/crpvInvestorSingle2"
+                    app:layout_constraintEnd_toEndOf="@+id/crpvInvestorSingle2"
+                    app:layout_constraintStart_toStartOf="@+id/crpvInvestorSingle2"
+                    app:layout_constraintTop_toTopOf="@+id/crpvInvestorSingle2"
+                    app:percent="75"
+                    app:startAngle="0"
+                    app:strokeWidth="15dp" />
+
+                <TextView
+                    android:id="@+id/investorSingleriskScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_Risk_Score"
+                    android:textColor="@color/darkGray"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/crpvInvestorSingle2"
+                    app:layout_constraintEnd_toEndOf="@+id/crpvInvestorSingle2"
+                    app:layout_constraintStart_toStartOf="@+id/crpvInvestorSingle2"
+                    app:layout_constraintTop_toTopOf="@+id/crpvInvestorSingle2" />
+
+                <TextView
+                    android:id="@+id/textView90"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/i_single_farm_13"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crpvInvestorSingle2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/white_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/singleFarmMapContainer"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_margin="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/white_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/shapeableImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/images"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/CircleImageViewStyle" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView"
+                app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+                app:layout_constraintTop_toTopOf="@+id/shapeableImageView">
+
+                <TextView
+                    android:id="@+id/textView91"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/i_single_farm_14"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView92"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/i_single_farm_15"
+                    android:textColor="@color/textGray"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView93"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/i_single_farm_16"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shapeableImageView" />
+
+            <TextView
+                android:id="@+id/textView94"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/i_single_farm_20"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/textView93"
+                app:layout_constraintStart_toEndOf="@+id/textView93"
+                app:layout_constraintTop_toTopOf="@+id/textView93" />
+
+            <TextView
+                android:id="@+id/textView95"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/i_single_farm_17"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView93" />
+
+            <TextView
+                android:id="@+id/textView96"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="19dp"
+                android:text="@string/i_single_farm_21"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/textView95"
+                app:layout_constraintStart_toEndOf="@+id/textView95"
+                app:layout_constraintTop_toTopOf="@+id/textView95" />
+
+            <TextView
+                android:id="@+id/textView97"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/i_single_farm_18"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout9" />
+
+            <TextView
+                android:id="@+id/textView98"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/i_single_farm_19"
+                android:textColor="@color/warm_orange"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/textView97"
+                app:layout_constraintStart_toStartOf="@+id/textView97"
+                app:layout_constraintTop_toBottomOf="@+id/textView97" />
+
+            <LinearLayout
+                android:id="@+id/signFarmfarmProgressButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/gradient_harvesting"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/signFarmfarmProgressText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/test_farm_harvesting"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/white_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
+
+            <TextView
+                android:id="@+id/textView99"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/i_single_farm_22"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/investorSingleRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView99" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/stockBuyFrameLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/white_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout11"
+            app:layout_constraintVertical_bias="0.0">
+
+        </FrameLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
+

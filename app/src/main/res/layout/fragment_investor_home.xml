@@ -11,13 +11,14 @@
         android:id="@+id/investor_home_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/liteGray"
         tools:context=".investor.InvestorHomeFragment">
 
         <View
             android:id="@+id/view10"
             android:layout_width="0dp"
-            android:layout_height="240dp"
-            android:background="@drawable/gradient_brown"
+            android:layout_height="260dp"
+            android:background="@color/liteGreen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -35,37 +36,15 @@
 
 
             <TextView
-                android:id="@+id/textView69"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/investor_home_1"
-                android:textColor="@color/gray"
-                android:textSize="40sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/investorHomeMenu" />
-
-            <TextView
-                android:id="@+id/textView70"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/investor_home_2"
-                android:textColor="@color/white"
-                android:textSize="40sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView69"
-                app:layout_constraintStart_toEndOf="@+id/textView69"
-                app:layout_constraintTop_toTopOf="@+id/textView69" />
-
-            <TextView
                 android:id="@+id/textView71"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="@string/investor_home_3"
-                android:textColor="@color/gray"
-                app:layout_constraintStart_toStartOf="@+id/textView69"
-                app:layout_constraintTop_toBottomOf="@+id/textView69" />
+                android:textColor="@color/textGray"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout5"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout5"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
             <ImageView
                 android:id="@+id/investorHomeNotification"
@@ -76,7 +55,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/investorHomeMenu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/investorHomeMenu"
-                app:tint="@color/gray" />
+                app:tint="@color/darkGray" />
 
             <ImageView
                 android:id="@+id/investorHomeNotificationAlertImage"
@@ -91,24 +70,11 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:src="@drawable/menu"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/gray" />
-
-            <View
-                android:id="@+id/view11"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/gray_background_top_curved"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView71"
-                app:layout_constraintVertical_bias="0.0" />
+                app:tint="@color/black" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hotItemRecyclerView"
@@ -140,10 +106,10 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:src="@drawable/fire"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/view11" />
+                app:layout_constraintTop_toBottomOf="@+id/textView71" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout7"
@@ -236,6 +202,34 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView68"></LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/investorHomeMenu">
+
+                <TextView
+                    android:id="@+id/textView69"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/investor_home_1"
+                    android:textColor="@color/green"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView70"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/investor_home_2"
+                    android:textColor="@color/black"
+                    android:textSize="40sp" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

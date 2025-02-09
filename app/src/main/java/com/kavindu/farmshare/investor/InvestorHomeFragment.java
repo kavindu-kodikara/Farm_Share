@@ -167,7 +167,8 @@ public class InvestorHomeFragment extends Fragment {
             itemButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(parent.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(parent.getContext(),InvestorSingleFarmActivity.class);
+                    parent.getContext().startActivity(intent);
                 }
             });
 

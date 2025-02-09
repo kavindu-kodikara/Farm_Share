@@ -1,5 +1,6 @@
 package com.kavindu.farmshare.investor;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -127,7 +128,10 @@ public class InvestorFarmsActivity extends AppCompatActivity {
             itemButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(InvestorFarmsActivity.this, "Item clicked", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(InvestorFarmsActivity.this, InvestorSingleFarmActivity.class);
+                    startActivity(intent);
+
                 }
             });
 

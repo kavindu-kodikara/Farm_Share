@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".investor.StockBuyActivity">
+
+    <ImageView
+        android:id="@+id/stockBuyBackButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/left_svgrepo_com"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/textGray" />
+
+    <ImageView
+        android:id="@+id/imageView25"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/item_background"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stockBuyBackButton"
+        app:srcCompat="@drawable/rice" />
+
+    <TextView
+        android:id="@+id/textView110"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/i_buy_1"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView25" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/textView110"
+        app:layout_constraintStart_toStartOf="@+id/textView110"
+        app:layout_constraintTop_toBottomOf="@+id/textView110">
+
+        <TextView
+            android:id="@+id/textView113"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="@string/i_buy_2"
+            android:textColor="@color/textGray"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView114"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/i_buy_3"
+            android:textColor="@color/textGray"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView26"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout10"
+        app:srcCompat="@drawable/stock"
+        app:tint="@color/textGray" />
+
+    <TextView
+        android:id="@+id/textView115"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/i_buy_4"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView26"
+        app:layout_constraintStart_toEndOf="@+id/imageView26"
+        app:layout_constraintTop_toTopOf="@+id/imageView26" />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:hint="@string/i_buy_9"
+        android:inputType="number"
+        android:padding="6dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView115"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView115" />
+
+    <View
+        android:id="@+id/view11"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/darkGray"
+        app:layout_constraintEnd_toEndOf="@+id/editTextNumber"
+        app:layout_constraintStart_toStartOf="@+id/imageView26"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+
+    <ImageView
+        android:id="@+id/imageView27"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view11"
+        app:srcCompat="@drawable/price"
+        app:tint="@color/textGray" />
+
+    <TextView
+        android:id="@+id/textView116"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/i_buy_6"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView27"
+        app:layout_constraintStart_toEndOf="@+id/imageView27"
+        app:layout_constraintTop_toTopOf="@+id/imageView27" />
+
+
+    <View
+        android:id="@+id/view12"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/darkGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView116" />
+
+    <TextView
+        android:id="@+id/textView117"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="@string/i_buy_7"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView116"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView116" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/gradient_orange"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view12">
+
+        <TextView
+            android:id="@+id/textView118"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/i_buy_8"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

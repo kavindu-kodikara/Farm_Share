@@ -16,6 +16,12 @@
         android:theme="@style/Theme.FarmShare"
         tools:targetApi="31">
         <activity
+            android:name=".investor.StockBuyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".investor.InvestorSingleFarmActivity"
+            android:exported="false" />
+        <activity
             android:name=".investor.InvestorFarmsActivity"
             android:exported="false" />
         <activity
