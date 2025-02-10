@@ -28,8 +28,8 @@
         app:menu="@menu/nav_menu"
         app:itemTextColor="@color/nav_item_color"
         app:itemIconTint="@color/nav_item_color"
-        app:itemIconSize="30dp"
-        android:background="@drawable/gradient_brown"
+        app:itemIconSize="20dp"
+        android:background="@color/white"
         app:itemTextAppearance="@style/NavItemTextAppearance"
         />
 

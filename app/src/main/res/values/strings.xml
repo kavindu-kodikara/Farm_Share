@@ -128,12 +128,23 @@
     <string name="investor_home_2">Fname</string>
     <string name="investor_home_3">Have a grate day!</string>
     <string name="investor_home_4">Today\'s Hot</string>
-    <string name="investor_home_5">My investments</string>
+    <string name="investor_home_5">Stock Holding</string>
     <string name="investor_home_6">+2.5%</string>
     <string name="investor_home_7">DRGF</string>
     <string name="investor_home_8">Rs.150</string>
     <string name="investor_home_9">Popular</string>
     <string name="investor_home_10">Fname Lname</string>
+    <string name="investor_home_11">Total Shares</string>
+    <string name="investor_home_12">Total Returns</string>
+    <string name="investor_home_13">Stock Allocation</string>
+    <string name="investor_home_14">Amount</string>
+    <string name="investor_home_15">Rs. 250,000 .00</string>
+    <string name="investor_home_16">Upcoming Payouts</string>
+    <string name="investor_home_17">Crop</string>
+    <string name="investor_home_18">Cash</string>
+    <string name="investor_home_19">May 1, 2025</string>
+    <string name="investor_home_20">Farm Name</string>
+    <string name="investor_home_21">S 2500</string>
 
     <!--    Investor farms-->
     <string name="i_farms_1">Search for Farms</string>
@@ -173,7 +184,7 @@
     <string name="i_single_farm_29">Rs. 250,000</string>
     <string name="i_single_farm_30">Buy More</string>
 
-<!--    Buy Stock-->
+    <!--    Buy Stock-->
     <string name="i_buy_1">Buy FDGT</string>
     <string name="i_buy_2">Farm name  :</string>
     <string name="i_buy_3">Rs.134 / Stock</string>
@@ -183,4 +194,16 @@
     <string name="i_buy_7">Rs. 13,870 .00</string>
     <string name="i_buy_8">Buy Now</string>
     <string name="i_buy_9">10</string>
+
+    <!--    Investor transactions-->
+    <string name="i_transactions_1">Farmer Name</string>
+    <string name="i_transactions_2">Transactions</string>
+    <string name="i_transactions_3">Today</string>
+    <string name="i_transactions_4">Farm Name</string>
+    <string name="i_transactions_5">Invest</string>
+    <string name="i_transactions_6">-13,000.00 RS</string>
+    <string name="i_transactions_7">20:45</string>
+    <string name="i_transactions_8">Old</string>
+    <string name="i_transactions_9">Explore Profitable Farms</string>
+    <string name="i_transactions_10">Save</string>
 </resources>

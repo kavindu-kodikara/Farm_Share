@@ -74,7 +74,15 @@ public class InvestorMainActivity extends AppCompatActivity implements Navigatio
             Intent intent = new Intent(InvestorMainActivity.this,InvestorFarmsActivity.class);
             startActivity(intent);
 
+        } else if (id == R.id.nav_transaction) {
+
+            transaction.replace(R.id.content_frame, new InvestorTransactionFragment());
+            navigationView.setCheckedItem(R.id.nav_transaction);
+
         } else if (id == R.id.nav_profile) {
+
+            transaction.replace(R.id.content_frame, new InvestorProfileFragment());
+            navigationView.setCheckedItem(R.id.nav_profile);
 
         } else if (id == R.id.nav_logout) {
 

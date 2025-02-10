@@ -20,7 +20,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.kavindu.farmshare.R;
 import com.kavindu.farmshare.model.HotItemBean;
 
@@ -30,9 +37,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.kavindu.farmshare.model.InvestItem;
+import com.kavindu.farmshare.model.PayoutItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class InvestorHomeFragment extends Fragment {
 
@@ -45,8 +54,8 @@ public class InvestorHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_investor_home, container, false);
 
-        ImageView menyButton = view.findViewById(R.id.investorHomeMenu);
-        menyButton.setOnClickListener(new View.OnClickListener() {
+        ImageView menuButton = view.findViewById(R.id.investorHomeMenu);
+        menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getActivity() instanceof InvestorMainActivity) {
@@ -97,16 +106,29 @@ public class InvestorHomeFragment extends Fragment {
         entries.add(new Entry(2022, 120));
 
         ArrayList<InvestItem> investItemArrayList = new ArrayList<>();
-        investItemArrayList.add(new InvestItem("1","Rice","FDER","+2.5%","Rs.250",false,entries));
-        investItemArrayList.add(new InvestItem("1","Corn","KTYG","-1.5%","Rs.120",true,entries));
+        investItemArrayList.add(new InvestItem("1","Rice","Test Farm 1","+2.5%","Rs. 250,000 .00",false,entries));
+        investItemArrayList.add(new InvestItem("1","Corn","Test Farm 2","-1.5%","Rs. 120,000 .00",true,entries));
 
         ArrayList<InvestItem> popularItemArrayList = new ArrayList<>();
         popularItemArrayList.add(new InvestItem("1","Corn","HJUT","+2.5%","Rs.250",false,entries));
         popularItemArrayList.add(new InvestItem("1","Rice","LAGR","-1.5%","Rs.120",true,entries));
         popularItemArrayList.add(new InvestItem("1","Rice","SRTY","+0.5%","Rs.320",false,entries));
 
+        //load popular items
         investItemInflater(R.id.popularItemLinearLayout,view,popularItemArrayList);
-        investItemInflater(R.id.myItemLinearLayout,view,investItemArrayList);
+
+        //load stock holding items
+        stockHoldingItemInflater(R.id.myItemLinearLayout,view,investItemArrayList);
+
+        //load stock allocation chart
+        loadStockAllocationChart(view);
+
+        ArrayList<PayoutItem> payoutItems = new ArrayList<>();
+        payoutItems.add(new PayoutItem("ASDE","Jan 6, 2025","Crop","2500 kg"));
+        payoutItems.add(new PayoutItem("RTEW","May 9, 2025","Cash","Rs. 250,000 .00"));
+        payoutItems.add(new PayoutItem("KLUY","May 3, 2025","Cash","Rs. 450,000 .00"));
+
+        payoutItemInflater(view,payoutItems);
 
 
         return view;
@@ -176,6 +198,156 @@ public class InvestorHomeFragment extends Fragment {
 
         }
 
+    }
+
+    private void stockHoldingItemInflater(int container, View parent, ArrayList<InvestItem> itemArrayList){
+
+        LinearLayout itemContainer = parent.findViewById(container);
+
+        for (InvestItem investItem : itemArrayList){
+
+            View item = getLayoutInflater().inflate(R.layout.fragment_investor_stock_holding_item,null);
+
+            ImageView image = item.findViewById(R.id.stockHoldingItemImageView22);
+            TextView title = item.findViewById(R.id.itemDesigntextView120);
+            TextView value = item.findViewById(R.id.itemDesigntextView121);
+            TextView price = item.findViewById(R.id.itemDesigntextView122);
+            LineChart chart = item.findViewById(R.id.stockHoldingItemLineChart);
+            ConstraintLayout itemButton = item.findViewById(R.id.stockHoldingItemConstraintLayout8);
+
+            title.setText(investItem.getTitle());
+            price.setText(investItem.getPrice());
+
+            if(investItem.getType().equals("Rice")){
+                image.setImageResource(R.drawable.rice);
+            }else if(investItem.getType().equals("Corn")){
+                image.setImageResource(R.drawable.corn);
+            }
+
+            LineDataSet dataSet = new LineDataSet(investItem.getChartData(), "");
+            dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+            dataSet.setLineWidth(2f);
+            dataSet.setDrawFilled(true);
+            dataSet.setDrawValues(false);
+            dataSet.setDrawCircles(false);
+
+            if (investItem.isLost()) {
+                value.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.red));
+                dataSet.setColor(Color.parseColor("#f27a7a"));
+                dataSet.setFillDrawable(ContextCompat.getDrawable(parent.getContext(), R.drawable.gradient_farmer_chart_red));
+            } else {
+                value.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.green));
+                dataSet.setColor(Color.parseColor("#7AF27B"));
+                dataSet.setFillDrawable(ContextCompat.getDrawable(parent.getContext(), R.drawable.gradient_farmer_chart));
+            }
+
+            LineData lineData = new LineData(dataSet);
+            chart.setData(lineData);
+            chart.invalidate();
+
+            chart.getDescription().setEnabled(false);
+            chart.getLegend().setEnabled(false);
+            chart.getXAxis().setEnabled(false);
+            chart.getAxisLeft().setEnabled(false);
+            chart.getAxisRight().setEnabled(false);
+
+
+            itemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(parent.getContext(),InvestorSingleFarmActivity.class);
+                    parent.getContext().startActivity(intent);
+                }
+            });
+
+            itemContainer.addView(item);
+
+        }
+
+    }
+
+    private void payoutItemInflater(View parent, ArrayList<PayoutItem> itemArrayList){
+
+        LinearLayout itemContainer = parent.findViewById(R.id.upcomingPaymentsContainer);
+
+        for (PayoutItem payoutItem : itemArrayList){
+
+            View item = getLayoutInflater().inflate(R.layout.fragment_upcoming_payout_item,null);
+
+            TextView title = item.findViewById(R.id.textView125);
+            TextView date = item.findViewById(R.id.textView126);
+            TextView returnType = item.findViewById(R.id.textView128);
+            TextView price = item.findViewById(R.id.textView129);
+
+            title.setText(payoutItem.getTitle());
+            price.setText(payoutItem.getPrice());
+            date.setText(payoutItem.getDate());
+            returnType.setText(payoutItem.getReturnType());
+
+            if(payoutItem.getReturnType().equals("Cash")){
+                returnType.setTextColor(ContextCompat.getColor(parent.getContext(),R.color.warm_orange));
+            }else if(payoutItem.getReturnType().equals("Crop")){
+                returnType.setTextColor(ContextCompat.getColor(parent.getContext(),R.color.green));
+            }
+
+                itemContainer.addView(item);
+
+        }
+
+    }
+
+    private void loadStockAllocationChart(View parent){
+        PieChart pieChart1 = parent.findViewById(R.id.pieChart);
+
+        // Create Pie Entries
+        ArrayList<PieEntry> pieEntryList = new ArrayList<>();
+        pieEntryList.add(new PieEntry(40, "Farm A"));
+        pieEntryList.add(new PieEntry(30, "Farm B"));
+        pieEntryList.add(new PieEntry(20, "Farm C"));
+        pieEntryList.add(new PieEntry(10, "Farm D"));
+
+        // Create Data Set
+        PieDataSet pieDataSet = new PieDataSet(pieEntryList, "");
+
+        // Generate Random Colors
+        ArrayList<Integer> colorArrayList = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < pieEntryList.size(); i++) {
+            colorArrayList.add(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+        }
+
+        pieDataSet.setColors(colorArrayList);
+        pieDataSet.setSliceSpace(3f);
+        pieDataSet.setSelectionShift(5f);
+
+        // Create Pie Data
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setValueTextSize(18f);
+        pieData.setValueTextColor(Color.WHITE);
+        pieData.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+
+        Legend legend = pieChart1.getLegend();
+        legend.setTextSize(16f);
+        legend.setFormSize(10f);
+
+        // Set Data & Style
+        pieChart1.setData(pieData);
+        pieChart1.setUsePercentValues(true);
+        pieChart1.setDrawHoleEnabled(true);
+        pieChart1.setHoleRadius(40f);
+        pieChart1.setTransparentCircleRadius(45f);
+        pieChart1.setDrawEntryLabels(false);
+        pieChart1.getDescription().setEnabled(false);
+
+
+        // Animate & Refresh
+        pieChart1.animateY(2000, Easing.EaseInCirc);
+        pieChart1.invalidate();
     }
 
 }
