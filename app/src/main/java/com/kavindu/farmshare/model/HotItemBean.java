@@ -1,6 +1,8 @@
 package com.kavindu.farmshare.model;
 
-public class HotItemBean {
+import java.io.Serializable;
+
+public class HotItemBean implements Serializable {
     private String title;
     private String value;
     private String cropType;

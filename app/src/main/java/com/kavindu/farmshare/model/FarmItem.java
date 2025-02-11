@@ -1,6 +1,8 @@
 package com.kavindu.farmshare.model;
 
-public class FarmItem {
+import java.io.Serializable;
+
+public class FarmItem implements Serializable {
     private String cropType;
     private String farmName;
     private boolean isAtRisk;

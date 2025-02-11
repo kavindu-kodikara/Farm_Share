@@ -2,9 +2,10 @@ package com.kavindu.farmshare.model;
 
 import com.github.mikephil.charting.data.Entry;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class InvestItem {
+public class InvestItem implements Serializable {
     private String id;
     private String type;
     private String title;

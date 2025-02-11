@@ -1,21 +1,28 @@
 package com.kavindu.farmshare.investor;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.farmer.FarmerSignupActivity;
 
 public class InvestorSignUpActivity extends AppCompatActivity {
 
@@ -30,7 +37,51 @@ public class InvestorSignUpActivity extends AppCompatActivity {
             return insets;
         });
 
+        EditText mobileEditText = findViewById(R.id.ISignUpeditTextPhone);
+        EditText fnameEditText = findViewById(R.id.ISignUpeditTextfname);
+        EditText lnameEditText = findViewById(R.id.ISignUpeditTextlname);
+        EditText passwordEditText = findViewById(R.id.ISignUpeditTextTextPassword);
+        EditText rePasswordEditText = findViewById(R.id.ISignUpeditTextTextPassword2);
+
         startAnimations();
+
+
+        mobileEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                setErrorColor(false,R.id.iMobileBg,R.id.iMobileIcon,R.id.ISignUptextView8,R.id.ISignUpeditTextPhone);
+            }
+        });
+
+        fnameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                setErrorColor(false,R.id.iFnameBg,R.id.iFnameIcon,R.id.ISignUptextView9,R.id.ISignUpeditTextfname);
+            }
+        });
+
+        lnameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                setErrorColor(false,R.id.iLnameBg,R.id.iLnameIcon,R.id.ISignUptextView10,R.id.ISignUpeditTextlname);
+            }
+        });
+
+        passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                setErrorColor(false,R.id.iPasswordBg,R.id.iPasswordIcon,R.id.ISignUptextView11,R.id.ISignUpeditTextTextPassword);
+            }
+        });
+
+        rePasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                setErrorColor(false,R.id.iRePasswordBg,R.id.iRePasswordIcon,R.id.ISignUptextView12,R.id.ISignUpeditTextTextPassword2);
+            }
+        });
+
+
 
         ImageView backButton = findViewById(R.id.ISignUpbackImageView1);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +104,40 @@ public class InvestorSignUpActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(InvestorSignUpActivity.this,InvestorMainActivity.class);
-                startActivity(intent);
+
+                if (mobileEditText.getText().toString().isBlank()){
+
+                    setErrorColor(true,R.id.iMobileBg,R.id.iMobileIcon,R.id.ISignUptextView8,R.id.ISignUpeditTextPhone);
+                    errorAnimation(R.id.ISignUpmobileLayout);
+
+                } else if (fnameEditText.getText().toString().isBlank()){
+
+                    setErrorColor(true,R.id.iFnameBg,R.id.iFnameIcon,R.id.ISignUptextView9,R.id.ISignUpeditTextfname);
+                    errorAnimation(R.id.ISignUpfnameLayout);
+
+                } else if (lnameEditText.getText().toString().isBlank()){
+
+                    setErrorColor(true,R.id.iLnameBg,R.id.iLnameIcon,R.id.ISignUptextView10,R.id.ISignUpeditTextlname);
+                    errorAnimation(R.id.ISignUplnameLayout);
+
+                } else if (passwordEditText.getText().toString().isBlank()){
+
+                    setErrorColor(true,R.id.iPasswordBg,R.id.iPasswordIcon,R.id.ISignUptextView11,R.id.ISignUpeditTextTextPassword);
+                    errorAnimation(R.id.ISignUppwLayout);
+
+                } else if (rePasswordEditText.getText().toString().isBlank()){
+
+                    setErrorColor(true,R.id.iRePasswordBg,R.id.iRePasswordIcon,R.id.ISignUptextView12,R.id.ISignUpeditTextTextPassword2);
+                    errorAnimation(R.id.ISignUppwConformLayout);
+
+                } else{
+
+                    Toast.makeText(InvestorSignUpActivity.this, "hi", Toast.LENGTH_SHORT).show();
+
+                }
+
+//                Intent intent = new Intent(InvestorSignUpActivity.this,InvestorMainActivity.class);
+//                startActivity(intent);
             }
         });
 
@@ -140,5 +223,38 @@ public class InvestorSignUpActivity extends AppCompatActivity {
                 signUpButton2.startAnimation(AnimationUtils.loadAnimation(InvestorSignUpActivity.this,R.anim.from_bottom_fade_in));
             }
         },700);
+    }
+
+    private void errorAnimation(int id){
+        LinearLayout layout = findViewById(id);
+        layout.startAnimation(AnimationUtils.loadAnimation(InvestorSignUpActivity.this,R.anim.shake_animation));
+    }
+
+    private void setErrorColor(boolean isError,int backgroundId, int iconId,int titleId,int editTextId){
+        LinearLayout background = findViewById(backgroundId);
+        ImageView icon = findViewById(iconId);
+        TextView title = findViewById(titleId);
+        EditText editText = findViewById(editTextId);
+
+        int color;
+        int titleColor;
+        Drawable bgDrawable;
+
+        if(isError){
+            color = ContextCompat.getColor(InvestorSignUpActivity.this,R.color.error_red);
+            titleColor = color;
+            bgDrawable = ContextCompat.getDrawable(InvestorSignUpActivity.this,R.drawable.custon_error_text_view_bg);
+
+        }else {
+            color = ContextCompat.getColor(InvestorSignUpActivity.this,R.color.textGray);
+            titleColor = ContextCompat.getColor(InvestorSignUpActivity.this,R.color.black);
+            bgDrawable = ContextCompat.getDrawable(InvestorSignUpActivity.this,R.drawable.custom_textview_background);
+        }
+
+
+        background.setBackground(bgDrawable);
+        icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        title.setTextColor(titleColor);
+        editText.setHintTextColor(color);
     }
 }

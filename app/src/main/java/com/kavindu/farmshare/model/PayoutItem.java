@@ -1,6 +1,8 @@
 package com.kavindu.farmshare.model;
 
-public class PayoutItem {
+import java.io.Serializable;
+
+public class PayoutItem implements Serializable {
     private String title;
     private String date;
     private String stock;

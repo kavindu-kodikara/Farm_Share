@@ -89,6 +89,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/iMobileBg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textview_background"
@@ -100,7 +101,7 @@
                     android:paddingBottom="12dp">
 
                     <ImageView
-                        android:id="@+id/ISignUpimageView"
+                        android:id="@+id/iMobileIcon"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         app:srcCompat="@drawable/phone" />
@@ -143,6 +144,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/iFnameBg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textview_background"
@@ -154,7 +156,7 @@
                     android:paddingBottom="12dp">
 
                     <ImageView
-                        android:id="@+id/ISignUpimageView2"
+                        android:id="@+id/iFnameIcon"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         app:srcCompat="@drawable/user" />
@@ -196,6 +198,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/iLnameBg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textview_background"
@@ -207,7 +210,7 @@
                     android:paddingBottom="12dp">
 
                     <ImageView
-                        android:id="@+id/ISignUpimageView3"
+                        android:id="@+id/iLnameIcon"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         app:srcCompat="@drawable/user" />
@@ -249,6 +252,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/iPasswordBg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textview_background"
@@ -260,7 +264,7 @@
                     android:paddingBottom="12dp">
 
                     <ImageView
-                        android:id="@+id/ISignUpimageView4"
+                        android:id="@+id/iPasswordIcon"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         app:srcCompat="@drawable/unlock" />
@@ -303,6 +307,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/iRePasswordBg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textview_background"
@@ -314,7 +319,7 @@
                     android:paddingBottom="12dp">
 
                     <ImageView
-                        android:id="@+id/ISignUpimageView5"
+                        android:id="@+id/iRePasswordIcon"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         app:srcCompat="@drawable/lock" />

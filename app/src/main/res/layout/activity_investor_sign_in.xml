@@ -91,6 +91,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/iSignInMobileBg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textview_background"
@@ -102,7 +103,7 @@
                     android:paddingBottom="12dp">
 
                     <ImageView
-                        android:id="@+id/ISignInimageView2"
+                        android:id="@+id/iSignInMobileIcon"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         app:srcCompat="@drawable/phone" />
@@ -145,6 +146,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
+                    android:id="@+id/iSignInPasswordBg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textview_background"
@@ -156,7 +158,7 @@
                     android:paddingBottom="12dp">
 
                     <ImageView
-                        android:id="@+id/ISignInimageView3"
+                        android:id="@+id/iSignInPasswordIcon"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         app:srcCompat="@drawable/lock" />

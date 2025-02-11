@@ -16,4 +16,5 @@
     <color name="lite_white">#EAE9E5</color>
     <color name="warm_white">#EE7D4D</color>
     <color name="warm_orange">#FB8652</color>
+    <color name="error_red">#CD3333</color>
 </resources>

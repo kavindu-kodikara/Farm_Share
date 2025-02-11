@@ -1,15 +1,21 @@
 package com.kavindu.farmshare.farmer;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,7 +35,24 @@ public class FarmerSignInActivity extends AppCompatActivity {
             return insets;
         });
 
+        EditText mobileEditText = findViewById(R.id.FSignInEditTextPhone);
+        EditText passwordEditText = findViewById(R.id.FSignInEditTextPassword);
+
         startAnimations();
+
+        mobileEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                setErrorColor(false,R.id.fSignInMobileBg,R.id.fSignInMobileIcon,R.id.FSignIntextView3,R.id.FSignInEditTextPhone);
+            }
+        });
+
+        passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                setErrorColor(false,R.id.fSignInPasswordBg,R.id.fSignInPasswordIcon,R.id.FSignIntextView4,R.id.FSignInEditTextPassword);
+            }
+        });
 
         ImageView backImageView = findViewById(R.id.FSignInBackImageView1);
         backImageView.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +67,28 @@ public class FarmerSignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+
+        LinearLayout signInButton = findViewById(R.id.FSignInsignInButton);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mobileEditText.getText().toString().isBlank()){
+
+                    setErrorColor(true,R.id.fSignInMobileBg,R.id.fSignInMobileIcon,R.id.FSignIntextView3,R.id.FSignInEditTextPhone);
+                    errorAnimation(R.id.FSignInmobileLayout);
+
+                } else if (passwordEditText.getText().toString().isBlank()){
+
+                    setErrorColor(true,R.id.fSignInPasswordBg,R.id.fSignInPasswordIcon,R.id.FSignIntextView4,R.id.FSignInEditTextPassword);
+                    errorAnimation(R.id.FSignInPasswordLayout);
+
+                } else{
+
+                    Toast.makeText(FarmerSignInActivity.this, "hi", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
@@ -102,6 +147,39 @@ public class FarmerSignInActivity extends AppCompatActivity {
             }
         },800);
 
+    }
+
+    private void errorAnimation(int id){
+        LinearLayout layout = findViewById(id);
+        layout.startAnimation(AnimationUtils.loadAnimation(FarmerSignInActivity.this,R.anim.shake_animation));
+    }
+
+    private void setErrorColor(boolean isError,int backgroundId, int iconId,int titleId,int editTextId){
+        LinearLayout background = findViewById(backgroundId);
+        ImageView icon = findViewById(iconId);
+        TextView title = findViewById(titleId);
+        EditText editText = findViewById(editTextId);
+
+        int color;
+        int titleColor;
+        Drawable bgDrawable;
+
+        if(isError){
+            color = ContextCompat.getColor(FarmerSignInActivity.this,R.color.error_red);
+            titleColor = color;
+            bgDrawable = ContextCompat.getDrawable(FarmerSignInActivity.this,R.drawable.custon_error_text_view_bg);
+
+        }else {
+            color = ContextCompat.getColor(FarmerSignInActivity.this,R.color.textGray);
+            titleColor = ContextCompat.getColor(FarmerSignInActivity.this,R.color.black);
+            bgDrawable = ContextCompat.getDrawable(FarmerSignInActivity.this,R.drawable.custom_textview_background);
+        }
+
+
+        background.setBackground(bgDrawable);
+        icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        title.setTextColor(titleColor);
+        editText.setHintTextColor(color);
     }
 
 }

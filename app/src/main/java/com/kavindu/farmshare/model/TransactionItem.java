@@ -1,6 +1,8 @@
 package com.kavindu.farmshare.model;
 
-public class TransactionItem {
+import java.io.Serializable;
+
+public class TransactionItem implements Serializable {
 
     private String name;
     private String type;
