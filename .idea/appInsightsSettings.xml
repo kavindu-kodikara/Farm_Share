@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.kavindu.farmshare" />
+                  <option name="mobileSdkAppId" value="1:529865450086:android:c4aa990a31c2cfb5aa83a7" />
+                  <option name="projectId" value="farmshare-e703b" />
+                  <option name="projectNumber" value="529865450086" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

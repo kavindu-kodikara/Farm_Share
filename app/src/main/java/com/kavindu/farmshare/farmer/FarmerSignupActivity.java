@@ -1,6 +1,8 @@
 package com.kavindu.farmshare.farmer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -25,8 +27,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.ResponseDto;
 import com.kavindu.farmshare.dto.UserDto;
 
 import java.io.IOException;
@@ -36,6 +40,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class FarmerSignupActivity extends AppCompatActivity {
 
@@ -145,30 +150,90 @@ public class FarmerSignupActivity extends AppCompatActivity {
 
                 } else{
 
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("mobile",mobileEditText.getText().toString());
-                    jsonObject.addProperty("fname",fnameEditText.getText().toString());
-                    jsonObject.addProperty("lname",lnameEditText.getText().toString());
-                    jsonObject.addProperty("password",passwordEditText.getText().toString());
-                    jsonObject.addProperty("rePassword",rePasswordEditText.getText().toString());
+                    UserDto userDto = new UserDto();
+                    userDto.setMobile(mobileEditText.getText().toString());
+                    userDto.setFname(fnameEditText.getText().toString());
+                    userDto.setLname(lnameEditText.getText().toString());
+                    userDto.setPassword(passwordEditText.getText().toString());
+                    userDto.setRePassword(rePasswordEditText.getText().toString());
+                    userDto.setUserType("farmer");
 
                     Gson gson = new Gson();
+
+                    Sweetalert pDialog = new Sweetalert(FarmerSignupActivity.this, Sweetalert.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Processing");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
 
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
 
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+
                             OkHttpClient okHttpClient = new OkHttpClient();
 
-                            RequestBody requestBody = RequestBody.create(gson.toJson(jsonObject), MediaType.get("application/json"));
+                            RequestBody requestBody = RequestBody.create(gson.toJson(userDto), MediaType.get("application/json"));
                             Request request = new Request.Builder()
-                                    .url(BuildConfig.URL+"/farmer/sign-up")
+                                    .url(BuildConfig.URL+"/user/sign-up")
                                     .post(requestBody)
                                     .build();
 
                             try {
 
                                 Response response = okHttpClient.newCall(request).execute();
+
+                                ResponseDto<UserDto> responseDto = gson.fromJson(response.body().string(), new TypeToken<ResponseDto<UserDto>>(){}.getType());
+
+                                UserDto responseUser = responseDto.getData();
+
+
+                                pDialog.cancel();
+
+                                if (responseDto.isSuccess()){
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new Sweetalert(FarmerSignupActivity.this, Sweetalert.SUCCESS_TYPE)
+                                                    .setTitleText("Success")
+                                                    .setContentText(responseDto.getMessage())
+                                                    .show();
+                                        }
+                                    });
+
+
+
+                                    SharedPreferences sp = getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("user",gson.toJson(responseUser));
+                                    editor.apply();
+
+                                    try {
+                                        Thread.sleep(500);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
+                                    Intent intent = new Intent(FarmerSignupActivity.this, FarmerMainActivity.class);
+                                    startActivity(intent);
+
+                                }else{
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new Sweetalert(FarmerSignupActivity.this, Sweetalert.ERROR_TYPE)
+                                                    .setTitleText("Oops...")
+                                                    .setContentText(responseDto.getMessage())
+                                                    .show();
+                                        }
+                                    });
+                                }
 
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
@@ -180,8 +245,7 @@ public class FarmerSignupActivity extends AppCompatActivity {
                 }
 
 
-//                Intent intent = new Intent(FarmerSignupActivity.this, FarmerMainActivity.class);
-//                startActivity(intent);
+//
             }
         });
 

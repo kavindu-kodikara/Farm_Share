@@ -1,5 +1,9 @@
 package com.kavindu.farmshare.farmer;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -20,7 +24,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.ResponseDto;
+import com.kavindu.farmshare.dto.UserDto;
+
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class FarmerSignInActivity extends AppCompatActivity {
 
@@ -86,7 +104,92 @@ public class FarmerSignInActivity extends AppCompatActivity {
 
                 } else{
 
-                    Toast.makeText(FarmerSignInActivity.this, "hi", Toast.LENGTH_SHORT).show();
+                    UserDto reqUserDto = new UserDto();
+                    reqUserDto.setMobile(mobileEditText.getText().toString());
+                    reqUserDto.setPassword(passwordEditText.getText().toString());
+                    reqUserDto.setUserType("farmer");
+
+                    Gson gson = new Gson();
+
+                    Sweetalert pDialog = new Sweetalert(FarmerSignInActivity.this, Sweetalert.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Processing");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            OkHttpClient okHttpClient = new OkHttpClient();
+
+                            RequestBody requestBody = RequestBody.create(gson.toJson(reqUserDto), MediaType.get("application/json"));
+                            Request request = new Request.Builder()
+                                    .url(BuildConfig.URL+"/user/sign-in")
+                                    .post(requestBody)
+                                    .build();
+
+                            try {
+
+                                Response response = okHttpClient.newCall(request).execute();
+                                ResponseDto<UserDto> responseDto = gson.fromJson(response.body().string(), new TypeToken<ResponseDto<UserDto>>(){}.getType());
+
+                                pDialog.cancel();
+
+                                if (responseDto.isSuccess()){
+
+                                    UserDto respUserDto = responseDto.getData();
+
+                                    SharedPreferences sp = getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("user", gson.toJson(respUserDto));
+                                    editor.apply();
+
+
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new Sweetalert(FarmerSignInActivity.this, Sweetalert.SUCCESS_TYPE)
+                                                    .setTitleText("Success")
+                                                    .setContentText(responseDto.getMessage())
+                                                    .show();
+                                        }
+                                    });
+
+                                    try {
+                                        Thread.sleep(500);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
+                                    Intent intent = new Intent(FarmerSignInActivity.this,FarmerMainActivity.class);
+                                    startActivity(intent);
+
+                                }else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new Sweetalert(FarmerSignInActivity.this, Sweetalert.ERROR_TYPE)
+                                                    .setTitleText("Oops...")
+                                                    .setContentText(responseDto.getMessage())
+                                                    .show();
+                                        }
+                                    });
+                                }
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+                    }).start();
 
                 }
             }

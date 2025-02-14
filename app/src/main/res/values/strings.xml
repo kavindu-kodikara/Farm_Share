@@ -206,4 +206,13 @@
     <string name="i_transactions_8">Old</string>
     <string name="i_transactions_9">Explore Profitable Farms</string>
     <string name="i_transactions_10">Save</string>
+
+    <string name="f_addf_1">Soil conditions</string>
+    <string name="f_addf_2">Soil pH (Score)</string>
+    <string name="f_addf_3">Moisture Content (%)</string>
+    <string name="f_addf_4">Organic Matter (%)</string>
+    <string name="f_addf_5">Nutrient Level (Score)</string>
+    <string name="f_addf_6">Add location</string>
+
+
 </resources>

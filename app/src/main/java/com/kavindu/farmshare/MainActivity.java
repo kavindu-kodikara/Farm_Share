@@ -1,6 +1,8 @@
 package com.kavindu.farmshare;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,7 +21,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.gson.Gson;
+import com.kavindu.farmshare.dto.UserDto;
+import com.kavindu.farmshare.farmer.FarmerMainActivity;
 import com.kavindu.farmshare.farmer.FarmerSignupActivity;
+import com.kavindu.farmshare.investor.InvestorMainActivity;
 import com.kavindu.farmshare.investor.InvestorSignUpActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +40,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user",null);
+
+        if (userJson != null){
+            Gson gson = new Gson();
+            UserDto user = gson.fromJson(userJson, UserDto.class);
+
+            if (user.getUserType().equals("Farmer")){
+                Intent intent = new Intent(MainActivity.this, FarmerMainActivity.class);
+                startActivity(intent);
+            }else if (user.getUserType().equals("Investor")){
+                Intent intent = new Intent(MainActivity.this, InvestorMainActivity.class);
+                startActivity(intent);
+            }
+
+        }
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // Force Light Mode
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
