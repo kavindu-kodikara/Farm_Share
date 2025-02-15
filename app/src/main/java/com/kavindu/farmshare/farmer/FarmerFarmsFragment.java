@@ -2,6 +2,8 @@ package com.kavindu.farmshare.farmer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,10 +20,24 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.RequestDto;
+import com.kavindu.farmshare.dto.ResponseDto;
+import com.kavindu.farmshare.dto.UserDto;
 import com.kavindu.farmshare.model.FarmItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 
 public class FarmerFarmsFragment extends Fragment {
@@ -42,13 +58,80 @@ public class FarmerFarmsFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ArrayList<FarmItem> farmItemList = new ArrayList<>();
-        farmItemList.add(new FarmItem("Rice","Test Farm 1",false,"670"));
-        farmItemList.add(new FarmItem("Corn","Test Farm 2",false,"260"));
-        farmItemList.add(new FarmItem("Rice","Test Farm 3",true,"430"));
-        farmItemList.add(new FarmItem("Corne","Test Farm 4",true,"730"));
 
-        recyclerView.setAdapter(new Adapter(farmItemList));
+        //load farms
+        Sweetalert pDialog = new Sweetalert(view.getContext(), Sweetalert.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Processing");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        SharedPreferences sp = getActivity().getSharedPreferences("com.kavindu.farmshare.data",Context.MODE_PRIVATE);
+        String user = sp.getString("user",null);
+
+        if (user != null){
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Gson gson = new Gson();
+
+                    UserDto userDto = gson.fromJson(user,UserDto.class);
+
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    RequestDto requestDto = new RequestDto(userDto.getId());
+
+                    RequestBody requestBody = RequestBody.create(gson.toJson(requestDto), MediaType.get("application/json"));
+                    Request request = new Request.Builder()
+                            .url(BuildConfig.URL+"/farm/load-my-farms")
+                            .post(requestBody)
+                            .build();
+
+                    try {
+
+                        Response response = okHttpClient.newCall(request).execute();
+                        ResponseDto<ArrayList<FarmItem>> responseDto = gson.fromJson(response.body().string(), new TypeToken<ResponseDto<ArrayList<FarmItem>>>(){}.getType());
+
+                        if (responseDto.isSuccess()){
+
+                            ArrayList<FarmItem> farmItems = responseDto.getData();
+
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    recyclerView.setAdapter(new Adapter(farmItems));
+                                    pDialog.cancel();
+                                }
+                            });
+
+                        }else{
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pDialog.cancel();
+                                    new Sweetalert(view.getContext(), Sweetalert.ERROR_TYPE)
+                                            .setTitleText("Oops...")
+                                            .setContentText("Something went wrong")
+                                            .show();
+                                }
+                            });
+                        }
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+            }).start();
+
+        }else {
+            pDialog.cancel();
+            new Sweetalert(view.getContext(), Sweetalert.ERROR_TYPE)
+                    .setTitleText("Oops...")
+                    .setContentText("Something went wrong please try again later")
+                    .show();
+        }
+
 
         FrameLayout addFarmButton = view.findViewById(R.id.addFarmButton);
         addFarmButton.setOnClickListener(new View.OnClickListener() {
@@ -116,10 +199,11 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder1>{
             holder.imageView.setImageResource(R.drawable.corn);
         }
 
-        if (farmItem.isAtRisk()){
+
+        if (farmItem.getIsAtRisk().equals("true")){
             holder.riskIndicator.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.gradient_risk));
             holder.risktextTextView.setText("At risk");
-        }else {
+        }else if (farmItem.getIsAtRisk().equals("false")) {
             holder.riskIndicator.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.gradient_good));
             holder.risktextTextView.setText("In good hands");
         }

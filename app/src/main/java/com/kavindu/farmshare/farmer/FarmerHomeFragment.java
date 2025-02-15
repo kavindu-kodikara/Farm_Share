@@ -1,6 +1,9 @@
 package com.kavindu.farmshare.farmer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +29,35 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
+import com.kavindu.farmshare.BuildConfig;
+import com.kavindu.farmshare.MainActivity;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.FarmerHomeDto;
+import com.kavindu.farmshare.dto.NameIdDto;
+import com.kavindu.farmshare.dto.RequestDto;
+import com.kavindu.farmshare.dto.UserDto;
 import com.timqi.sectorprogressview.ColorfulRingProgressView;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 
 public class FarmerHomeFragment extends Fragment {
@@ -40,7 +68,12 @@ public class FarmerHomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    ColorfulRingProgressView crpv1;
+    ColorfulRingProgressView crpv2;
 
+    TextView riskScoreText;
+    TextView riskScoreTitle;
+    TextView riskScore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,27 +81,16 @@ public class FarmerHomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_farmer_home, container, false);
 
-        ColorfulRingProgressView crpv1 = (ColorfulRingProgressView) view.findViewById(R.id.crpv);
+        crpv1 = (ColorfulRingProgressView) view.findViewById(R.id.crpv);
         crpv1.setPercent(75);
 
-        ColorfulRingProgressView crpv2 = (ColorfulRingProgressView) view.findViewById(R.id.crpv2);
+        crpv2 = (ColorfulRingProgressView) view.findViewById(R.id.crpv2);
         crpv2.setPercent(35);
 
-        TextView riskScoreText = view.findViewById(R.id.riskScoreText);
-        TextView riskScoreTitle = view.findViewById(R.id.riskScoreTitle);
-        TextView riskScore = view.findViewById(R.id.riskScore);
+         riskScoreText = view.findViewById(R.id.riskScoreText);
+         riskScoreTitle = view.findViewById(R.id.riskScoreTitle);
+         riskScore = view.findViewById(R.id.riskScore);
 
-//        crpv1.setVisibility(View.INVISIBLE);
-//        riskScore.setText("85");
-//        riskScoreTitle.setText(R.string.test_Risk_Score_text_good);
-//        riskScoreText.setText("good hands");
-//        riskScoreText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.green));
-
-        crpv2.setVisibility(View.INVISIBLE);
-        riskScore.setText("215");
-        riskScoreTitle.setText(R.string.test_Risk_Score_text_risk);
-        riskScoreText.setText("Risk");
-        riskScoreText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.red));
 
         LinearLayout farmProgressButton = view.findViewById(R.id.farmProgressButton);
         TextView farmProgressText = view.findViewById(R.id.farmProgressText);
@@ -186,7 +208,180 @@ public class FarmerHomeFragment extends Fragment {
             }
         });
 
+        //load data
+        Sweetalert pDialog = new Sweetalert(view.getContext(), Sweetalert.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Processing");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        SharedPreferences sp = getActivity().getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+        String user = sp.getString("user",null);
+
+        if (user != null){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    Gson gson = new Gson();
+
+
+
+                    UserDto userDto = gson.fromJson(user,UserDto.class);
+                    RequestDto requestDto = new RequestDto(userDto.getId());
+
+                    RequestBody requestBody = RequestBody.create(gson.toJson(requestDto), MediaType.get("application/json"));
+                    Request request = new Request.Builder()
+                            .url(BuildConfig.URL+"/farmer-home/load-home")
+                            .post(requestBody)
+                            .build();
+
+                    try {
+
+                        Response response = okHttpClient.newCall(request).execute();
+                        FarmerHomeDto farmerHomeDto = gson.fromJson(response.body().string(), FarmerHomeDto.class);
+
+                        ArrayList<NameIdDto> chipArrayList = farmerHomeDto.getChipArray();
+
+                        if(farmerHomeDto.isSuccess()){
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+                                    //add chips
+                                    ChipGroup chipGroup = view.findViewById(R.id.homeChipgroup);
+
+                                    int heightInPixels = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, 55, view.getContext().getResources().getDisplayMetrics());
+
+
+                                    for (int i = 0; i < chipArrayList.size(); i++) {
+
+                                        NameIdDto nameIdDto = chipArrayList.get(i);
+
+                                        Chip chip = new Chip(view.getContext());
+                                        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(
+                                                ViewGroup.LayoutParams.WRAP_CONTENT, heightInPixels);
+
+                                        chip.setLayoutParams(params);
+
+                                        chip.setCheckable(true);
+                                        chip.setChecked(i == 0);
+                                        chip.setText(nameIdDto.getName());
+                                        ColorStateList textColor = ContextCompat.getColorStateList(view.getContext(), R.color.chip_text_color);
+                                        chip.setTextColor(textColor);
+                                        chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                                        ColorStateList chipBackgroundColor = ContextCompat.getColorStateList(view.getContext(), R.color.chip_selector);
+                                        chip.setChipBackgroundColor(chipBackgroundColor);
+                                        chip.setChipStrokeWidth(0);
+
+                                        chip.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View clickCiew) {
+                                                Toast.makeText(view.getContext(), String.valueOf(nameIdDto.getId()), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                                        chipGroup.addView(chip);
+                                    }
+
+
+                                    chipGroup.invalidate();
+                                    updateData(farmerHomeDto,view);
+                                    pDialog.cancel();
+                                }
+                            });
+
+                        }else {
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pDialog.cancel();
+                                    new Sweetalert(view.getContext(), Sweetalert.ERROR_TYPE)
+                                            .setTitleText("Oops...")
+                                            .setContentText("Something went wrong")
+                                            .show();
+                                }
+                            });
+
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            Intent intent = new Intent(view.getContext(), FarmerSignInActivity.class);
+                            startActivity(intent);
+                        }
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+            }).start();
+        }
+
+
 
         return view;
+    }
+
+    private void updateData(FarmerHomeDto farmerHomeDto,View parent){
+
+        int percentage = (int) ((farmerHomeDto.getRiskScore() * 100) / 200);
+
+        if (farmerHomeDto.getRiskScore() > 120){
+            crpv2.setVisibility(View.INVISIBLE);
+            riskScore.setText(String.valueOf(farmerHomeDto.getRiskScore()));
+            riskScoreTitle.setText(R.string.test_Risk_Score_text_risk);
+            riskScoreText.setText("Risk");
+            riskScoreText.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.red));
+            crpv1.setPercent(Math.min(percentage, 100));
+
+        }else {
+            crpv1.setVisibility(View.INVISIBLE);
+            riskScore.setText(String.valueOf(farmerHomeDto.getRiskScore()));
+            riskScoreTitle.setText(R.string.test_Risk_Score_text_good);
+            riskScoreText.setText("good hands");
+            riskScoreText.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.green));
+            crpv2.setPercent(Math.min(percentage, 100));
+
+        }
+
+        TextView totStockTxt = parent.findViewById(R.id.textView19);
+        TextView relesedStockTxt = parent.findViewById(R.id.textView21);
+        TextView expIncomeTxt = parent.findViewById(R.id.textView23);
+        TextView stockProgressTxt = parent.findViewById(R.id.textView26);
+        TextView dateTxt = parent.findViewById(R.id.textView24);
+        View stockProgressBackBar = parent.findViewById(R.id.view2);
+        View stockProgressFrontBar = parent.findViewById(R.id.view3);
+
+        String totStock = "S "+String.valueOf(farmerHomeDto.getTotStock());
+        String relesedStock = "S "+String.valueOf(farmerHomeDto.getRelesedStock());
+        String expIncome = "Rs. "+ new DecimalFormat("#,###").format(farmerHomeDto.getExpectIncome())+" .00";
+        String stockProgressStock = "S "+String.valueOf(farmerHomeDto.getStockProgress());
+        String today = new SimpleDateFormat("d  MMMM  yyyy", Locale.getDefault()).format(new Date());
+
+        totStockTxt.setText(totStock);
+        relesedStockTxt.setText(relesedStock);
+        expIncomeTxt.setText(expIncome);
+        stockProgressTxt.setText(stockProgressStock);
+        dateTxt.setText(today);
+
+        int maxValue = farmerHomeDto.getRelesedStock();
+        int currentValue = farmerHomeDto.getStockProgress();
+        int vBackWidth = stockProgressBackBar.getWidth();
+        float viewPercentage = (float) currentValue / maxValue;
+        int vFrontWidth = (int) (viewPercentage * vBackWidth);
+        stockProgressFrontBar.getLayoutParams().width = vFrontWidth;
+        stockProgressFrontBar.requestLayout();
+
+
+
+
+
     }
 }

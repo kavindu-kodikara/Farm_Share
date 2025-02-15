@@ -21,13 +21,15 @@
 
     <TextView
         android:id="@+id/textView39"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/test_farm_name"
-        android:textColor="@color/black"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView15"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:text="TextView"
         android:textColor="@color/textGray"
         android:textSize="15sp"
@@ -46,11 +48,11 @@
 
     <View
         android:id="@+id/view5"
-        android:layout_width="50dp"
+        android:layout_width="35dp"
         android:layout_height="15dp"
+        android:layout_marginStart="24dp"
         android:background="@drawable/gradient_risk"
         app:layout_constraintBottom_toBottomOf="@+id/textView40"
-        app:layout_constraintEnd_toStartOf="@+id/textView41"
         app:layout_constraintStart_toEndOf="@+id/textView39"
         app:layout_constraintTop_toTopOf="@+id/textView39" />
 

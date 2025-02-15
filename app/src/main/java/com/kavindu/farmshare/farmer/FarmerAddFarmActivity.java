@@ -51,9 +51,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.MainActivity;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.ImageDto;
 import com.kavindu.farmshare.dto.ResponseDto;
 import com.kavindu.farmshare.dto.UserDto;
 import com.kavindu.farmshare.investor.InvestorMainActivity;
@@ -433,7 +435,7 @@ public class FarmerAddFarmActivity extends AppCompatActivity {
 
                     pDialog = new Sweetalert(FarmerAddFarmActivity.this, Sweetalert.PROGRESS_TYPE);
                     pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    pDialog.setTitleText("Processing");
+                    pDialog.setTitleText("Processing farm data");
                     pDialog.setCancelable(false);
                     pDialog.show();
 
@@ -497,6 +499,9 @@ public class FarmerAddFarmActivity extends AppCompatActivity {
 
                                     // Check if all files are uploaded
                                     if (uploadCount.incrementAndGet() == totalFiles) {
+
+
+
                                         sendUrlsToBackend(uploadedUrls);
                                     }
                                 }
@@ -554,31 +559,26 @@ public class FarmerAddFarmActivity extends AppCompatActivity {
                     try {
 
                         Response response = client.newCall(request).execute();
-                        ResponseDto responseDto = gson.fromJson(response.body().string(), ResponseDto.class);
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                pDialog.cancel();
-                            }
-                        });
+                        ResponseDto<Integer> responseDto = gson.fromJson(response.body().string(), new TypeToken<ResponseDto<Integer>>(){}.getType());
 
                         if (responseDto.isSuccess()){
+
+                            Log.i("FarmShareLog",String.valueOf(responseDto.getData()));
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    new Sweetalert(FarmerAddFarmActivity.this, Sweetalert.SUCCESS_TYPE)
-                                            .setTitleText("Success")
-                                            .setContentText(responseDto.getMessage())
-                                            .show();
+                                    pDialog.setTitleText("Uploading images");
                                 }
                             });
+
+                            uploadImagesToFirebase(imageUris,responseDto.getData());
 
                         }else{
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    pDialog.cancel();
                                     new Sweetalert(FarmerAddFarmActivity.this, Sweetalert.ERROR_TYPE)
                                             .setTitleText("Oops...")
                                             .setContentText(responseDto.getMessage())
@@ -599,7 +599,7 @@ public class FarmerAddFarmActivity extends AppCompatActivity {
     }
 
     // upload farm images
-    private void uploadImagesToFirebase(List<Uri> productImages) {
+    private void uploadImagesToFirebase(List<Uri> productImages,int farmId) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         List<String> uploadedUrls = new ArrayList<>();
         AtomicInteger uploadCount = new AtomicInteger(0);
@@ -621,7 +621,7 @@ public class FarmerAddFarmActivity extends AppCompatActivity {
 
                                     // Check if all files are uploaded
                                     if (uploadCount.incrementAndGet() == totalFiles) {
-//                                        sendImagesToBackend(uploadedUrls);
+                                        sendImagesToBackend(uploadedUrls,farmId);
                                     }
                                 }
                             });
@@ -637,26 +637,66 @@ public class FarmerAddFarmActivity extends AppCompatActivity {
     }
 
     // add farm images request
-    private void sendImagesToBackend(ArrayList<String> uploadedUrls) {
+    private void sendImagesToBackend(List<String> uploadedUrls,int farmId) {
 
         OkHttpClient client = new OkHttpClient();
         Gson gson = new Gson();
 
-        String jsonPayload = gson.toJson(uploadedUrls);
+        ImageDto imageDto = new ImageDto(uploadedUrls,farmId);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                RequestBody requestBody = RequestBody.create(jsonPayload, MediaType.get("application/json"));
+                RequestBody requestBody = RequestBody.create(gson.toJson(imageDto), MediaType.get("application/json"));
                 Request request = new Request.Builder()
-                        .url(BuildConfig.URL + "/farm/add-farm")
+                        .url(BuildConfig.URL + "/farm/save-images")
                         .post(requestBody)
                         .build();
 
                 try {
 
                     Response response = client.newCall(request).execute();
+                    ResponseDto responseDto = gson.fromJson(response.body().string(),ResponseDto.class);
+
+                    if (responseDto.isSuccess()){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pDialog.cancel();
+                                new Sweetalert(FarmerAddFarmActivity.this, Sweetalert.SUCCESS_TYPE)
+                                        .setTitleText("Success")
+                                        .setContentText(responseDto.getMessage())
+                                        .show();
+                            }
+                        });
+
+                        try {
+                            Thread.sleep(700);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(FarmerAddFarmActivity.this,FarmerMainActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+
+                    }else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pDialog.cancel();
+                                new Sweetalert(FarmerAddFarmActivity.this, Sweetalert.ERROR_TYPE)
+                                        .setTitleText("Oops...")
+                                        .setContentText(responseDto.getMessage())
+                                        .show();
+                            }
+                        });
+                    }
 
                 } catch (IOException e) {
                     Log.e("Backend", "Network error while sending URLs", e);

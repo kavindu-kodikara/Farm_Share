@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class FarmItem implements Serializable {
     private String cropType;
     private String farmName;
-    private boolean isAtRisk;
+    private String isAtRisk;
     private String stockCount;
 
     public FarmItem() {
     }
 
-    public FarmItem(String cropType, String farmName, boolean isAtRisk, String stockCount) {
+    public FarmItem(String cropType, String farmName, String isAtRisk, String stockCount) {
         this.cropType = cropType;
         this.farmName = farmName;
         this.isAtRisk = isAtRisk;
@@ -34,12 +34,12 @@ public class FarmItem implements Serializable {
         this.farmName = farmName;
     }
 
-    public boolean isAtRisk() {
+    public String getIsAtRisk() {
         return isAtRisk;
     }
 
-    public void setAtRisk(boolean atRisk) {
-        isAtRisk = atRisk;
+    public void setIsAtRisk(String isAtRisk) {
+        this.isAtRisk = isAtRisk;
     }
 
     public String getStockCount() {

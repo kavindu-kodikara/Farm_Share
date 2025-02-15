@@ -75,60 +75,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView15">
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/homeChipgroup"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fadeScrollbars="false"
                     android:scrollbarSize="0dp"
                     app:chipSpacingHorizontal="15dp"
                     app:singleLine="true"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:checkable="true"
-                        android:checked="true"
-                        android:includeFontPadding="false"
-                        android:text="@string/test_farm_name"
-                        android:textColor="@color/chip_text_color"
-                        android:textSize="16sp"
-                        app:chipBackgroundColor="@color/chip_selector"
-                        app:chipStrokeWidth="0dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:checkable="true"
-                        android:text="@string/fname"
-                        android:textColor="@color/chip_text_color"
-                        android:textSize="16sp"
-                        app:chipBackgroundColor="@color/chip_selector"
-                        app:chipStrokeWidth="0dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:checkable="true"
-                        android:text="@string/test_farm_name"
-                        android:textColor="@color/chip_text_color"
-                        android:textSize="16sp"
-                        app:chipBackgroundColor="@color/chip_selector"
-                        app:chipStrokeWidth="0dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:checkable="true"
-                        android:text="@string/test_farm_name"
-                        android:textColor="@color/chip_text_color"
-                        android:textSize="16sp"
-                        app:chipBackgroundColor="@color/chip_selector"
-                        app:chipStrokeWidth="0dp" />
-                </com.google.android.material.chip.ChipGroup>
+                    app:singleSelection="true"/>
             </HorizontalScrollView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -329,13 +283,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="16dp"
                     android:text="@string/test_farm_stock"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/textView18"
-                    app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                    app:layout_constraintTop_toTopOf="@+id/textView18" />
 
                 <TextView
                     android:id="@+id/textView20"
@@ -354,13 +307,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="8dp"
                     android:text="@string/test_farm__released_stock"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/textView20"
-                    app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                    app:layout_constraintTop_toTopOf="@+id/textView20" />
 
                 <TextView
                     android:id="@+id/textView22"
@@ -450,13 +402,11 @@
 
                 <View
                     android:id="@+id/view3"
-                    android:layout_width="0dp"
+                    android:layout_width="250dp"
                     android:layout_height="15dp"
-                    android:layout_marginEnd="100dp"
                     android:background="@drawable/gradient_harvesting"
                     app:layout_constraintBottom_toBottomOf="@+id/view2"
-                    app:layout_constraintEnd_toEndOf="@+id/view2"
-                    app:layout_constraintStart_toStartOf="@+id/view2"
+                    app:layout_constraintStart_toStartOf="@+id/textView26"
                     app:layout_constraintTop_toTopOf="@+id/view2" />
 
                 <TextView
