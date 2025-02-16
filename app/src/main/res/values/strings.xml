@@ -88,14 +88,15 @@
     <string name="add_farm_ownership_doc_description">Upload a valid document proving farm ownership</string>
     <string name="add_farm_record_doc">Farm Output Record</string>
     <string name="add_farm_record_doc_description">A valid document showing farm analysis for the last 2 years</string>
-    <string name="add_farm_soil_doc">Farm Soil Report</string>
+    <string name="add_farm_soil_doc">Farm Soil Conditions</string>
     <string name="add_farm_soil_doc_description">A valid soil analysis report obtained within the last 2 weeks</string>
-    <string name="add_farm_soil_doc_description2">Upload valid soil analysis report update</string>
+    <string name="add_farm_soil_doc_description2">Upload valid soil analysis update</string>
     <string name="add_farm_nic_number">Owner NIC number</string>
     <string name="add_farm_location">Farm Location</string>
     <string name="add_farm_media">Media</string>
     <string name="add_farm_submit">Submit</string>
     <string name="add_farm_code_name">Code Name</string>
+    <string name="add_farm_save_soil">Submit</string>
     <string name="add_farm_code_name_description">Unique name for your farm</string>
 
     <!--    farmer profile-->
@@ -213,6 +214,17 @@
     <string name="f_addf_4">Organic Matter (%)</string>
     <string name="f_addf_5">Nutrient Level (Score)</string>
     <string name="f_addf_6">Add location</string>
+
+    <string name="f_home_1">Stock release</string>
+    <string name="f_home_2">Total stock</string>
+    <string name="f_home_3">Released stock</string>
+    <string name="f_home_4">S 1000</string>
+    <string name="f_home_5">S 500</string>
+    <string name="f_home_6">Release</string>
+    <string name="f_home_7">Start this season</string>
+    <string name="f_home_8">Start date</string>
+    <string name="f_home_9">End date</string>
+    <string name="f_home_10">Start</string>
 
 
 </resources>

@@ -16,6 +16,13 @@ public class FarmerHomeDto implements Serializable {
     private int relesedStock;
     private double expectIncome;
     private int stockProgress;
+    private  ArrayList<ChartEntruDto> chartEntryList;
+    private boolean priceDrop;
+    private List<StockAllocationTableItemDto> tableItemList;
+    private String investorsCount;
+    private int farmId;
+    private String farmStatus;
+
 
     public FarmerHomeDto() {
     }
@@ -30,6 +37,22 @@ public class FarmerHomeDto implements Serializable {
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public boolean isPriceDrop() {
+        return priceDrop;
+    }
+
+    public String getFarmStatus() {
+        return farmStatus;
+    }
+
+    public void setFarmStatus(String farmStatus) {
+        this.farmStatus = farmStatus;
+    }
+
+    public void setPriceDrop(boolean priceDrop) {
+        this.priceDrop = priceDrop;
     }
 
     public void setSuccess(boolean success) {
@@ -98,5 +121,37 @@ public class FarmerHomeDto implements Serializable {
 
     public void setStockProgress(int stockProgress) {
         this.stockProgress = stockProgress;
+    }
+
+    public ArrayList<ChartEntruDto> getChartEntryList() {
+        return chartEntryList;
+    }
+
+    public void setChartEntryList(ArrayList<ChartEntruDto> chartEntryList) {
+        this.chartEntryList = chartEntryList;
+    }
+
+    public List<StockAllocationTableItemDto> getTableItemList() {
+        return tableItemList;
+    }
+
+    public void setTableItemList(List<StockAllocationTableItemDto> tableItemList) {
+        this.tableItemList = tableItemList;
+    }
+
+    public String getInvestorsCount() {
+        return investorsCount;
+    }
+
+    public void setInvestorsCount(String investorsCount) {
+        this.investorsCount = investorsCount;
+    }
+
+    public int getFarmId() {
+        return farmId;
+    }
+
+    public void setFarmId(int farmId) {
+        this.farmId = farmId;
     }
 }
