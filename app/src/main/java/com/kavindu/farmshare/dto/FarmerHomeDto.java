@@ -22,6 +22,7 @@ public class FarmerHomeDto implements Serializable {
     private String investorsCount;
     private int farmId;
     private String farmStatus;
+    private double singleStockPrice;
 
 
     public FarmerHomeDto() {
@@ -153,5 +154,13 @@ public class FarmerHomeDto implements Serializable {
 
     public void setFarmId(int farmId) {
         this.farmId = farmId;
+    }
+
+    public double getSingleStockPrice() {
+        return singleStockPrice;
+    }
+
+    public void setSingleStockPrice(double singleStockPrice) {
+        this.singleStockPrice = singleStockPrice;
     }
 }

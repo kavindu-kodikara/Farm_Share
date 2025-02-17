@@ -230,6 +230,7 @@ public class FarmerHomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(),FarmerRiskReviewActivity.class);
+                intent.putExtra("id",farmId);
                 view.getContext().startActivity(intent);
             }
         });
@@ -504,6 +505,7 @@ public class FarmerHomeFragment extends Fragment {
         TextView dateTxt = parent.findViewById(R.id.textView24);
         TextView farmName = parent.findViewById(R.id.textView14);
         TextView totStockSr = parent.findViewById(R.id.textView37);
+        TextView singleStockTxt = parent.findViewById(R.id.textView144);
         TextView releasedStockSr = parent.findViewById(R.id.textView139);
         View stockProgressBackBar = parent.findViewById(R.id.view2);
         View stockProgressFrontBar = parent.findViewById(R.id.view3);
@@ -511,6 +513,7 @@ public class FarmerHomeFragment extends Fragment {
         String totStock = "S "+String.valueOf(farmerHomeDto.getTotStock());
         String relesedStock = "S "+String.valueOf(farmerHomeDto.getRelesedStock());
         String expIncome = "Rs. "+ new DecimalFormat("#,###").format(farmerHomeDto.getExpectIncome())+" .00";
+        String singleStickPrice = "Rs. "+farmerHomeDto.getSingleStockPrice();
         String stockProgressStock = "S "+String.valueOf(farmerHomeDto.getStockProgress());
         String today = new SimpleDateFormat("d  MMMM  yyyy", Locale.getDefault()).format(new Date());
 
@@ -522,6 +525,13 @@ public class FarmerHomeFragment extends Fragment {
         totStockSr.setText(totStock);
         releasedStockSr.setText(relesedStock);
         farmProgressText.setText(farmerHomeDto.getFarmStatus());
+        singleStockTxt.setText(singleStickPrice);
+
+        if (farmerHomeDto.isPriceDrop()){
+            singleStockTxt.setTextColor(ContextCompat.getColor(parent.getContext(),R.color.red));
+        }else {
+            singleStockTxt.setTextColor(ContextCompat.getColor(parent.getContext(),R.color.green));
+        }
 
         Log.i("FarmShareLog",String.valueOf(farmerHomeDto.getRelesedStock()));
 

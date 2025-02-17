@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,12 @@ import com.kavindu.farmshare.farmer.FarmerAddFarmActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import taimoor.sultani.sweetalert2.Sweetalert;
+
 public class InvestorSingleFarmActivity extends AppCompatActivity {
 
     private GoogleMap map;
+    private int farmId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,24 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        String id = getIntent().getStringExtra("farmId");
+
+        if (id == null){
+            Intent intent = new Intent(InvestorSingleFarmActivity.this,InvestorMainActivity.class);
+            startActivity(intent);
+        }else{
+            farmId = Integer.parseInt(id);
+        }
+
+
+        //load data
+        Sweetalert pDialog = new Sweetalert(InvestorSingleFarmActivity.this, Sweetalert.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Processing");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
 
         ImageView imageView = findViewById(R.id.investorSingleFarmBack);
         imageView.setOnClickListener(new View.OnClickListener() {

@@ -90,8 +90,23 @@
                 app:startAngle="0"
                 app:strokeWidth="15dp" />
 
+            <com.timqi.sectorprogressview.ColorfulRingProgressView
+                android:id="@+id/riskChart2"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="32dp"
+                app:bgColor="@color/liteGray"
+                app:fgColorEnd="#ff4800"
+                app:fgColorStart="#ffe400"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:percent="35"
+                app:startAngle="0"
+                app:strokeWidth="15dp" />
+
             <TextView
-                android:id="@+id/riskScore"
+                android:id="@+id/riskScoreText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_Risk_Score"

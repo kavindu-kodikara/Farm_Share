@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -150,6 +151,8 @@ public class FarmerSignInActivity extends AppCompatActivity {
                                     SharedPreferences.Editor editor = sp.edit();
                                     editor.putString("user", gson.toJson(respUserDto));
                                     editor.apply();
+
+
 
 
 

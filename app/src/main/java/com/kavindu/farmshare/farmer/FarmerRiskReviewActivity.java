@@ -1,9 +1,12 @@
 package com.kavindu.farmshare.farmer;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +20,29 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.gson.Gson;
+import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.ChartEntruDto;
+import com.kavindu.farmshare.dto.RequestDto;
+import com.kavindu.farmshare.dto.ResponseDto;
+import com.kavindu.farmshare.dto.RiskReviewDto;
+import com.timqi.sectorprogressview.ColorfulRingProgressView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import taimoor.sultani.sweetalert2.Sweetalert;
+
 public class FarmerRiskReviewActivity extends AppCompatActivity {
+
+    int fardId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +63,103 @@ public class FarmerRiskReviewActivity extends AppCompatActivity {
             }
         });
 
+        //load data
+        Intent intent = getIntent();
+        fardId = intent.getIntExtra("id",0);
+
+        Sweetalert pDialog = new Sweetalert(FarmerRiskReviewActivity.this, Sweetalert.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Processing");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gson gson = new Gson();
+                RequestDto requestDto = new RequestDto();
+                requestDto.setId(fardId);
+
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(gson.toJson(requestDto), MediaType.get("application/json"));
+                Request request = new Request.Builder()
+                        .url(BuildConfig.URL+"/farm/load-risk-review")
+                        .post(requestBody)
+                        .build();
+
+                try {
+
+                    Response response = okHttpClient.newCall(request).execute();
+                    RiskReviewDto riskReviewDto = gson.fromJson(response.body().string(),RiskReviewDto.class);
+
+                    ArrayList<Entry> weatherEntryList = new ArrayList<>();
+                    ArrayList<Entry> soilEntryList = new ArrayList<>();
+
+                    for (ChartEntruDto chartEntruDto : riskReviewDto.getWeatherChartList()){
+                        Entry entry = new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue());
+                        weatherEntryList.add(entry);
+
+                    }
+
+                    for (ChartEntruDto chartEntruDto : riskReviewDto.getSoilChartList()){
+                        Entry entry = new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue());
+                        soilEntryList.add(entry);
+
+                    }
+
+                    ColorfulRingProgressView crpv1 = findViewById(R.id.riskChart2);
+                    ColorfulRingProgressView crpv2  = findViewById(R.id.riskChart1);
+                    TextView riskScore  = findViewById(R.id.riskScoreText);
+
+                    int percentage = (int) ((Double.parseDouble(riskReviewDto.getRiskScore()) * 100) / 200);
+
+                    Thread.sleep(500);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pDialog.cancel();
+                                loadWeatherChart(weatherEntryList);
+                                loadSoilChart(soilEntryList);
+
+                                if (riskReviewDto.isRisk()){
+                                    crpv2.setVisibility(View.INVISIBLE);
+                                    crpv1.setVisibility(View.VISIBLE);
+                                    riskScore.setText(riskReviewDto.getRiskScore());
+                                    crpv1.setPercent(Math.min(percentage, 100));
+
+                                }else {
+                                    crpv1.setVisibility(View.INVISIBLE);
+                                    crpv2.setVisibility(View.VISIBLE);
+                                    riskScore.setText(riskReviewDto.getRiskScore());
+                                    crpv2.setPercent(Math.min(percentage, 100));
+
+                                }
+
+                            }
+                        });
+
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            }
+        }).start();
+
+
+
+
+
+
+
+    }
+
+    private void loadWeatherChart(ArrayList<Entry> entryList){
         //wether chart
 
         LineChart lineChart1 = findViewById(R.id.riskLineChart1);
-
-
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1990, 60));
-        entries.add(new Entry(1994, 30));
-        entries.add(new Entry(1998, 90));
-        entries.add(new Entry(2002, 60));
-        entries.add(new Entry(2006, 100));
-        entries.add(new Entry(2010, 70));
-        entries.add(new Entry(2014, 30));
-        entries.add(new Entry(2018, 80));
-        entries.add(new Entry(2022, 120));
-
-
-        LineDataSet dataSet = new LineDataSet(entries, "Weather");  // Fill color
+        LineDataSet dataSet = new LineDataSet(entryList, "Weather");  // Fill color
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER); // Enable smooth cubic lines
         dataSet.setColor(Color.parseColor("#7AE2F2"));
         dataSet.setCircleColor(Color.parseColor("#7AE2F2"));
@@ -83,26 +182,14 @@ public class FarmerRiskReviewActivity extends AppCompatActivity {
 
         XAxis xAxis = lineChart1.getXAxis();
         xAxis.setDrawGridLines(false);
+    }
 
-
+    private void loadSoilChart(ArrayList<Entry> entryList){
         //Soil chart
 
         LineChart lineChart2 = findViewById(R.id.riskLineChart2);
 
-
-        List<Entry> entries2 = new ArrayList<>();
-        entries2.add(new Entry(1990, 60));
-        entries2.add(new Entry(1994, 30));
-        entries2.add(new Entry(1998, 90));
-        entries2.add(new Entry(2002, 60));
-        entries2.add(new Entry(2006, 100));
-        entries2.add(new Entry(2010, 70));
-        entries2.add(new Entry(2014, 30));
-        entries2.add(new Entry(2018, 80));
-        entries2.add(new Entry(2022, 120));
-
-
-        LineDataSet dataSet2 = new LineDataSet(entries, "Soil");  // Fill color
+        LineDataSet dataSet2 = new LineDataSet(entryList, "Soil");  // Fill color
         dataSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER); // Enable smooth cubic lines
         dataSet2.setColor(Color.parseColor("#F2B87A"));
         dataSet2.setCircleColor(Color.parseColor("#F2B87A"));
@@ -125,7 +212,5 @@ public class FarmerRiskReviewActivity extends AppCompatActivity {
 
         XAxis xAxis2 = lineChart2.getXAxis();
         xAxis2.setDrawGridLines(false);
-
-
     }
 }

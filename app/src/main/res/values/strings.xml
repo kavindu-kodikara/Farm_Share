@@ -36,7 +36,7 @@
     <string name="investorSignInTxt">Welcome back! Access your investments and track your returns</string>
 
     <!--    Farmer Home Fragment-->
-    <string name="letast_notification">Latest Notification Today</string>
+    <string name="letast_notification">Stock price : </string>
     <string name="test_Risk_Score">85</string>
     <string name="test_Risk_Score_text">good hands</string>
     <string name="test_Risk_Score_text_risk">Your farm is at</string>
@@ -104,9 +104,9 @@
 
     <!--    farmer risk review-->
     <string name="farmer_risk_review_title">Risk review</string>
-    <string name="farmer_risk_review_weather">Weather condition</string>
+    <string name="farmer_risk_review_weather">Weather risk score</string>
     <string name="farmer_risk_review_weather_text">Last 7 days</string>
-    <string name="farmer_risk_review_soil">Soil condition</string>
+    <string name="farmer_risk_review_soil">Soil risk score</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_investor_main">InvestorMainActivity</string>
@@ -160,10 +160,10 @@
     <string name="i_single_farm_4">278</string>
     <string name="i_single_farm_5">.95</string>
     <string name="i_single_farm_6">Rs.1.35 (2.51%)</string>
-    <string name="i_single_farm_7">Last Week</string>
+    <string name="i_single_farm_7">Today</string>
     <string name="i_single_farm_8">1 WEEK</string>
     <string name="i_single_farm_9">1 MONTH</string>
-    <string name="i_single_farm_10">1 YEAR</string>
+    <string name="i_single_farm_10">SEASON</string>
     <string name="i_single_farm_11">Avg income</string>
     <string name="i_single_farm_12">Rs.280,000.00</string>
     <string name="i_single_farm_13">Risk score</string>
@@ -225,6 +225,7 @@
     <string name="f_home_8">Start date</string>
     <string name="f_home_9">End date</string>
     <string name="f_home_10">Start</string>
+    <string name="f_home_11">Rs. 100 .00</string>
 
 
 </resources>

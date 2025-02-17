@@ -1,7 +1,9 @@
 package com.kavindu.farmshare.investor;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +31,17 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.gson.Gson;
+import com.kavindu.farmshare.BuildConfig;
+import com.kavindu.farmshare.MainActivity;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.ChartEntruDto;
+import com.kavindu.farmshare.dto.InvestItemDto;
+import com.kavindu.farmshare.dto.InvestorHomeDto;
+import com.kavindu.farmshare.dto.RequestDto;
+import com.kavindu.farmshare.dto.ResponseDto;
+import com.kavindu.farmshare.dto.StockAllocationDto;
+import com.kavindu.farmshare.dto.UserDto;
 import com.kavindu.farmshare.model.HotItemBean;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -39,11 +52,23 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.kavindu.farmshare.model.InvestItem;
 import com.kavindu.farmshare.model.PayoutItem;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import taimoor.sultani.sweetalert2.Sweetalert;
+
 public class InvestorHomeFragment extends Fragment {
+
+
+    UserDto user;
 
     public InvestorHomeFragment() {
         // Required empty public constructor
@@ -53,6 +78,21 @@ public class InvestorHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_investor_home, container, false);
+
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user",null);
+
+        if (userJson == null){
+            Intent intent = new Intent(view.getContext(), MainActivity.class);
+            startActivity(intent);
+        }
+
+        Gson gson = new Gson();
+        user = gson.fromJson(userJson, UserDto.class);
+
+        TextView fnameText = view.findViewById(R.id.textView70);
+        fnameText.setText(user.getFname());
+
 
         ImageView menuButton = view.findViewById(R.id.investorHomeMenu);
         menuButton.setOnClickListener(new View.OnClickListener() {
@@ -85,14 +125,6 @@ public class InvestorHomeFragment extends Fragment {
 
         hotItemRecyclerView.setLayoutManager(linearLayoutManager);
 
-        ArrayList<HotItemBean> hotItemList = new ArrayList<>();
-        hotItemList.add(new HotItemBean("FAHS","-2.5%","Rice","1",true));
-        hotItemList.add(new HotItemBean("HYDF","+3.5%","Corn","1",false));
-        hotItemList.add(new HotItemBean("KSGD","+0.5%","Rice","1",false));
-        hotItemList.add(new HotItemBean("LKHY","-0.5%","Corn","1",true));
-
-        hotItemRecyclerView.setAdapter(new HotItemAdapter(hotItemList));
-
 
         List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(1990, 60));
@@ -105,30 +137,136 @@ public class InvestorHomeFragment extends Fragment {
         entries.add(new Entry(2018, 80));
         entries.add(new Entry(2022, 120));
 
-        ArrayList<InvestItem> investItemArrayList = new ArrayList<>();
-        investItemArrayList.add(new InvestItem("1","Rice","Test Farm 1","+2.5%","Rs. 250,000 .00",false,entries));
-        investItemArrayList.add(new InvestItem("1","Corn","Test Farm 2","-1.5%","Rs. 120,000 .00",true,entries));
-
-        ArrayList<InvestItem> popularItemArrayList = new ArrayList<>();
-        popularItemArrayList.add(new InvestItem("1","Corn","HJUT","+2.5%","Rs.250",false,entries));
-        popularItemArrayList.add(new InvestItem("1","Rice","LAGR","-1.5%","Rs.120",true,entries));
-        popularItemArrayList.add(new InvestItem("1","Rice","SRTY","+0.5%","Rs.320",false,entries));
-
-        //load popular items
-        investItemInflater(R.id.popularItemLinearLayout,view,popularItemArrayList);
-
-        //load stock holding items
-        stockHoldingItemInflater(R.id.myItemLinearLayout,view,investItemArrayList);
 
         //load stock allocation chart
-        loadStockAllocationChart(view);
+//        loadStockAllocationChart(view);
 
-        ArrayList<PayoutItem> payoutItems = new ArrayList<>();
-        payoutItems.add(new PayoutItem("ASDE","Jan 6, 2025","Crop","2500 kg"));
-        payoutItems.add(new PayoutItem("RTEW","May 9, 2025","Cash","Rs. 250,000 .00"));
-        payoutItems.add(new PayoutItem("KLUY","May 3, 2025","Cash","Rs. 450,000 .00"));
 
-        payoutItemInflater(view,payoutItems);
+
+        //load data from server
+        Sweetalert pDialog = new Sweetalert(view.getContext(), Sweetalert.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Processing");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Gson gson = new Gson();
+                RequestDto requestDto = new RequestDto(user.getId());
+
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(gson.toJson(requestDto), MediaType.get("application/json"));
+                Request request = new Request.Builder()
+                        .url(BuildConfig.URL+"/investor/load-home")
+                        .post(requestBody)
+                        .build();
+
+                try {
+
+                    Response response = okHttpClient.newCall(request).execute();
+                    InvestorHomeDto investorHomeDto = gson.fromJson(response.body().string(), InvestorHomeDto.class);
+
+                    if (investorHomeDto.isSuccess()){
+
+                        //load hot items
+                        ArrayList<HotItemBean> hotItemBeans = investorHomeDto.getHotList();
+
+                        //load popular items
+                        ArrayList<InvestItemDto> popularItemList = (ArrayList<InvestItemDto>) investorHomeDto.getPopularList();
+                        ArrayList<InvestItem> popularItemArrayList = new ArrayList<>();
+
+                        for (InvestItemDto investItemDto : popularItemList){
+                            InvestItem investItem = new InvestItem();
+                            investItem.setId(investItemDto.getId());
+                            investItem.setType(investItemDto.getType());
+                            investItem.setTitle(investItemDto.getTitle());
+                            investItem.setValue(investItemDto.getValue());
+                            investItem.setPrice(investItemDto.getPrice());
+                            investItem.setLost(investItemDto.getLost().equals("true"));
+
+                            List<Entry> chartData = new ArrayList<>();
+
+                            for (ChartEntruDto chartEntruDto : investItemDto.getChartData()){
+                                chartData.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                            }
+
+                            investItem.setChartData(chartData);
+                            popularItemArrayList.add(investItem);
+
+
+                        }
+
+
+                        //load stock holding
+                        ArrayList<InvestItemDto>stockHItemList = (ArrayList<InvestItemDto>) investorHomeDto.getStockHoldingList();
+                        ArrayList<InvestItem> stockHItemArrayList = new ArrayList<>();
+
+                        for (InvestItemDto investItemDto : stockHItemList){
+                            InvestItem investItem = new InvestItem();
+                            investItem.setId(investItemDto.getId());
+                            investItem.setType(investItemDto.getType());
+                            investItem.setTitle(investItemDto.getTitle());
+                            investItem.setValue(investItemDto.getValue());
+                            investItem.setPrice(investItemDto.getPrice());
+                            investItem.setLost(investItemDto.getLost().equals("true"));
+
+                            List<Entry> chartData = new ArrayList<>();
+
+                            for (ChartEntruDto chartEntruDto : investItemDto.getChartData()){
+                                chartData.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                            }
+
+                            investItem.setChartData(chartData);
+                            stockHItemArrayList.add(investItem);
+
+
+                        }
+
+
+                        //load stock allocation
+                        ArrayList<PieEntry> pieEntryList = new ArrayList<>();
+                        for (StockAllocationDto stockAllocationDto : investorHomeDto.getAllocationList()){
+                            double percentage = (stockAllocationDto.getValue() / investorHomeDto.getAllocationTot()) * 100;
+                            pieEntryList.add(new PieEntry((float) percentage,stockAllocationDto.getName()));
+                        }
+
+                        String allocationTot = "Rs. "+ new DecimalFormat("#,###").format(investorHomeDto.getAllocationTot());
+
+                        //load payouts
+                        ArrayList<PayoutItem> payoutItems = (ArrayList<PayoutItem>) investorHomeDto.getPayoutItemList();
+
+                        Thread.sleep(500);
+
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                hotItemRecyclerView.setAdapter(new HotItemAdapter(hotItemBeans));
+                                investItemInflater(R.id.popularItemLinearLayout,view,popularItemArrayList);
+                                stockHoldingItemInflater(view,stockHItemArrayList);
+                                TextView totText = view.findViewById(R.id.textView122);
+                                totText.setText(allocationTot);
+                                loadStockAllocationChart(view,pieEntryList);
+                                payoutItemInflater(view,payoutItems);
+                                pDialog.cancel();
+                            }
+                        });
+
+
+
+
+                    }
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }).start();
 
 
         return view;
@@ -151,6 +289,7 @@ public class InvestorHomeFragment extends Fragment {
 
             title.setText(investItem.getTitle());
             price.setText(investItem.getPrice());
+            value.setText(investItem.getValue());
 
             if(investItem.getType().equals("Rice")){
                 image.setImageResource(R.drawable.rice);
@@ -190,6 +329,7 @@ public class InvestorHomeFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(parent.getContext(),InvestorSingleFarmActivity.class);
+                    intent.putExtra("farmId",investItem.getId());
                     parent.getContext().startActivity(intent);
                 }
             });
@@ -200,23 +340,24 @@ public class InvestorHomeFragment extends Fragment {
 
     }
 
-    private void stockHoldingItemInflater(int container, View parent, ArrayList<InvestItem> itemArrayList){
+    private void stockHoldingItemInflater(View parent, ArrayList<InvestItem> itemArrayList){
 
-        LinearLayout itemContainer = parent.findViewById(container);
+        LinearLayout itemContainer = parent.findViewById(R.id.SHmyItemLinearLayout);
 
         for (InvestItem investItem : itemArrayList){
 
             View item = getLayoutInflater().inflate(R.layout.fragment_investor_stock_holding_item,null);
 
-            ImageView image = item.findViewById(R.id.stockHoldingItemImageView22);
-            TextView title = item.findViewById(R.id.itemDesigntextView120);
-            TextView value = item.findViewById(R.id.itemDesigntextView121);
-            TextView price = item.findViewById(R.id.itemDesigntextView122);
-            LineChart chart = item.findViewById(R.id.stockHoldingItemLineChart);
-            ConstraintLayout itemButton = item.findViewById(R.id.stockHoldingItemConstraintLayout8);
+            ImageView image = item.findViewById(R.id.SHstockHoldingItemImageView22);
+            TextView title = item.findViewById(R.id.SHitemDesigntextView120);
+            TextView value = item.findViewById(R.id.SHitemDesigntextView121);
+            TextView price = item.findViewById(R.id.SHitemDesigntextView122);
+            LineChart chart = item.findViewById(R.id.SHstockHoldingItemLineChart);
+            ConstraintLayout itemButton = item.findViewById(R.id.SHstockHoldingItemConstraintLayout8);
 
             title.setText(investItem.getTitle());
             price.setText(investItem.getPrice());
+            value.setText(investItem.getValue());
 
             if(investItem.getType().equals("Rice")){
                 image.setImageResource(R.drawable.rice);
@@ -256,6 +397,7 @@ public class InvestorHomeFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(parent.getContext(),InvestorSingleFarmActivity.class);
+                    intent.putExtra("farmId",investItem.getId());
                     parent.getContext().startActivity(intent);
                 }
             });
@@ -296,15 +438,8 @@ public class InvestorHomeFragment extends Fragment {
 
     }
 
-    private void loadStockAllocationChart(View parent){
+    private void loadStockAllocationChart(View parent,ArrayList<PieEntry> pieEntryList){
         PieChart pieChart1 = parent.findViewById(R.id.pieChart);
-
-        // Create Pie Entries
-        ArrayList<PieEntry> pieEntryList = new ArrayList<>();
-        pieEntryList.add(new PieEntry(40, "Farm A"));
-        pieEntryList.add(new PieEntry(30, "Farm B"));
-        pieEntryList.add(new PieEntry(20, "Farm C"));
-        pieEntryList.add(new PieEntry(10, "Farm D"));
 
         // Create Data Set
         PieDataSet pieDataSet = new PieDataSet(pieEntryList, "");
