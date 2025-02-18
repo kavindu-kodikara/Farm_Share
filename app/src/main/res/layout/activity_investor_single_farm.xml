@@ -161,6 +161,7 @@
             app:layout_constraintTop_toBottomOf="@+id/singleFarmLineChart">
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:singleLine="true"
@@ -302,6 +303,8 @@
                     app:percent="75"
                     app:startAngle="0"
                     app:strokeWidth="15dp" />
+
+
 
                 <TextView
                     android:id="@+id/investorSingleriskScore"

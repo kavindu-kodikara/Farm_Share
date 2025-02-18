@@ -3,6 +3,7 @@ package com.kavindu.farmshare.investor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import com.kavindu.farmshare.R;
 
 public class StockBuyActivity extends AppCompatActivity {
 
+    String farmId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,9 @@ public class StockBuyActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        farmId = getIntent().getStringExtra("id");
+        Toast.makeText(this, farmId, Toast.LENGTH_SHORT).show();
 
         ImageView backButton = findViewById(R.id.stockBuyBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {

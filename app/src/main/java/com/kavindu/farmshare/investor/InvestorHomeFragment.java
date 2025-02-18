@@ -69,6 +69,7 @@ public class InvestorHomeFragment extends Fragment {
 
 
     UserDto user;
+    View viewParent;
 
     public InvestorHomeFragment() {
         // Required empty public constructor
@@ -78,6 +79,7 @@ public class InvestorHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_investor_home, container, false);
+        viewParent = view;
 
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
         String userJson = sharedPreferences.getString("user",null);
@@ -491,6 +493,7 @@ class HotItemAdapter extends RecyclerView.Adapter <HotItemAdapter.HotItemViewHol
 
     ArrayList<HotItemBean> itemList;
 
+
     public HotItemAdapter(ArrayList<HotItemBean> itemList) {
         this.itemList = itemList;
     }
@@ -546,7 +549,9 @@ class HotItemAdapter extends RecyclerView.Adapter <HotItemAdapter.HotItemViewHol
         holder.hotItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(holder.itemView.getContext(), InvestorSingleFarmActivity.class);
+                intent.putExtra("farmId",hotItemBean.getId());
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 

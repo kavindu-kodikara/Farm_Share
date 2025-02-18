@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class SingleFarmDto implements Serializable {
+    private boolean success;
     private String codeName;
     private String farmName;
     private String stockPrice;
@@ -26,8 +27,22 @@ public class SingleFarmDto implements Serializable {
     private List<ChartEntruDto> weekChartData;
     private List<ChartEntruDto> monthChartData;
     private List<ChartEntruDto> seasonChartData;
+    private boolean invested;
+    private String investedStock;
+    private String investedPercentage;
+    private String expectIncome;
+    private boolean investDrop;
+    private String profileImg;
 
     public SingleFarmDto() {
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getCodeName() {
@@ -204,5 +219,53 @@ public class SingleFarmDto implements Serializable {
 
     public void setSeasonChartData(List<ChartEntruDto> seasonChartData) {
         this.seasonChartData = seasonChartData;
+    }
+
+    public boolean isInvested() {
+        return invested;
+    }
+
+    public void setInvested(boolean invested) {
+        this.invested = invested;
+    }
+
+    public String getInvestedStock() {
+        return investedStock;
+    }
+
+    public void setInvestedStock(String investedStock) {
+        this.investedStock = investedStock;
+    }
+
+    public String getInvestedPercentage() {
+        return investedPercentage;
+    }
+
+    public void setInvestedPercentage(String investedPercentage) {
+        this.investedPercentage = investedPercentage;
+    }
+
+    public String getExpectIncome() {
+        return expectIncome;
+    }
+
+    public void setExpectIncome(String expectIncome) {
+        this.expectIncome = expectIncome;
+    }
+
+    public boolean isInvestDrop() {
+        return investDrop;
+    }
+
+    public void setInvestDrop(boolean investDrop) {
+        this.investDrop = investDrop;
+    }
+
+    public String getProfileImg() {
+        return profileImg;
+    }
+
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
 }
