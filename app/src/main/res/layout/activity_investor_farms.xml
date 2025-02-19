@@ -79,7 +79,7 @@
                 android:ems="10"
                 android:hint="@string/i_farms_1"
                 android:inputType="text"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView22"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -129,7 +129,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/i_transactions_9"
             android:textColor="@color/black"
-            android:textSize="34sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
             app:layout_constraintTop_toBottomOf="@+id/investorFarmBack" />

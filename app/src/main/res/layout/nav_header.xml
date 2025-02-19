@@ -23,7 +23,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/images"
+            android:src="@drawable/newlogo"
             app:shapeAppearance="@style/CircleImageViewStyle" />
     </FrameLayout>
 
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="@string/investor_home_10"
+        android:text="@string/f_home_12"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"

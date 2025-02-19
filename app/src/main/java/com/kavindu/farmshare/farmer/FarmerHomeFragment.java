@@ -409,9 +409,9 @@ public class FarmerHomeFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     pDialog.cancel();
-                                    new Sweetalert(view.getContext(), Sweetalert.ERROR_TYPE)
+                                    new Sweetalert(view.getContext(), Sweetalert.WARNING_TYPE)
                                             .setTitleText("Oops...")
-                                            .setContentText("Something went wrong")
+                                            .setContentText("Add new farm")
                                             .show();
                                 }
                             });
@@ -422,7 +422,7 @@ public class FarmerHomeFragment extends Fragment {
                                 throw new RuntimeException(e);
                             }
 
-                            Intent intent = new Intent(view.getContext(), FarmerSignInActivity.class);
+                            Intent intent = new Intent(view.getContext(), FarmerAddFarmActivity.class);
                             startActivity(intent);
                         }
 

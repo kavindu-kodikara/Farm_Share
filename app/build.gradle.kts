@@ -71,6 +71,8 @@ dependencies {
     implementation ("com.github.taimoorsultani:android-sweetalert2:2.0.2")
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation("com.google.firebase:firebase-storage")
+    implementation ("com.github.PayHereDevs:payhere-android-sdk:v3.0.17")
+    implementation ("androidx.appcompat:appcompat:1.6.0")
 
 
 

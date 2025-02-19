@@ -33,6 +33,7 @@ public class SingleFarmDto implements Serializable {
     private String expectIncome;
     private boolean investDrop;
     private String profileImg;
+    private boolean stockReleased;
 
     public SingleFarmDto() {
     }
@@ -267,5 +268,13 @@ public class SingleFarmDto implements Serializable {
 
     public void setProfileImg(String profileImg) {
         this.profileImg = profileImg;
+    }
+
+    public boolean isStockReleased() {
+        return stockReleased;
+    }
+
+    public void setStockReleased(boolean stockReleased) {
+        this.stockReleased = stockReleased;
     }
 }

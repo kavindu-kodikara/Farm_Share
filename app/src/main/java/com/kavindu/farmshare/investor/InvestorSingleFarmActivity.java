@@ -282,7 +282,6 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
                                 if (singleFarmDto.isInvested()){
                                     Log.i("FarmShareLog","Invested");
 
-                                    LinearLayout buyMoreButton = investedView.findViewById(R.id.singleFarmBuyMoreButton);
                                     TextView investedStock = investedView.findViewById(R.id.textView108);
                                     TextView investedPercentage = investedView.findViewById(R.id.textView109);
                                     TextView investedIncome = investedView.findViewById(R.id.textView111);
@@ -291,14 +290,7 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
                                     investedStock.setText(singleFarmDto.getInvestedStock());
                                     investedPercentage.setText(singleFarmDto.getInvestedPercentage());
                                     investedIncome.setText(singleFarmDto.getExpectIncome());
-                                    buyMoreButton.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Intent intent = new Intent(InvestorSingleFarmActivity.this,StockBuyActivity.class);
-                                            intent.putExtra("id",String.valueOf(farmId));
-                                            startActivity(intent);
-                                        }
-                                    });
+
 
                                     if (singleFarmDto.isInvestDrop()){
                                         investedIncomeImg.setImageResource(R.drawable.down_arrow);
@@ -333,9 +325,18 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
                                     buyButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            Intent intent = new Intent(InvestorSingleFarmActivity.this,StockBuyActivity.class);
-                                            intent.putExtra("id",String.valueOf(farmId));
-                                            startActivity(intent);
+
+                                            if(singleFarmDto.isStockReleased()){
+                                                Intent intent = new Intent(InvestorSingleFarmActivity.this,StockBuyActivity.class);
+                                                intent.putExtra("id",String.valueOf(farmId));
+                                                startActivity(intent);
+                                            }else {
+                                                new Sweetalert(InvestorSingleFarmActivity.this, Sweetalert.ERROR_TYPE)
+                                                        .setTitleText("Oops...")
+                                                        .setContentText("Stock not released")
+                                                        .show();
+                                            }
+
                                         }
                                     });
 

@@ -192,7 +192,7 @@
     <string name="i_buy_4">No. of Stocks</string>
     <string name="i_buy_5">No. of Stocks</string>
     <string name="i_buy_6">Total</string>
-    <string name="i_buy_7">Rs. 13,870 .00</string>
+    <string name="i_buy_7">Rs. 0 .00</string>
     <string name="i_buy_8">Buy Now</string>
     <string name="i_buy_9">10</string>
 
@@ -226,6 +226,13 @@
     <string name="f_home_9">End date</string>
     <string name="f_home_10">Start</string>
     <string name="f_home_11">Rs. 100 .00</string>
+    <string name="f_home_12">Farm Share</string>
+    <string name="f_home_13">Return type</string>
+
+    <string name="invoice_1">Invoice</string>
+    <string name="invoice_2">#123342312</string>
+    <string name="invoice_3">24 Jan, 2025</string>
+    <string name="invoice_4">Print</string>
 
 
 </resources>

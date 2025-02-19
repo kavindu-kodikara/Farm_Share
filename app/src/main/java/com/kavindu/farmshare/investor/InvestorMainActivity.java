@@ -1,6 +1,8 @@
 package com.kavindu.farmshare.investor;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -17,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
+import com.kavindu.farmshare.MainActivity;
 import com.kavindu.farmshare.R;
 
 public class InvestorMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,7 +88,13 @@ public class InvestorMainActivity extends AppCompatActivity implements Navigatio
             navigationView.setCheckedItem(R.id.nav_profile);
 
         } else if (id == R.id.nav_logout) {
+            SharedPreferences sp = getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("user", null);
+            editor.apply();
 
+            Intent intent = new Intent(InvestorMainActivity.this, MainActivity.class);
+            startActivity(intent);
         }
 
         // Commit the transaction

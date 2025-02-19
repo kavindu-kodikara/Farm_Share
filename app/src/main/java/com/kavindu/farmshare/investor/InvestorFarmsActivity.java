@@ -1,9 +1,11 @@
 package com.kavindu.farmshare.investor;
 
+import android.content.Entity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,11 +26,25 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.gson.Gson;
+import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.R;
+import com.kavindu.farmshare.dto.ChartEntruDto;
+import com.kavindu.farmshare.dto.InvestItemDto;
+import com.kavindu.farmshare.dto.RequestDto;
+import com.kavindu.farmshare.dto.SearchDto;
 import com.kavindu.farmshare.model.InvestItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class InvestorFarmsActivity extends AppCompatActivity {
 
@@ -43,6 +59,67 @@ public class InvestorFarmsActivity extends AppCompatActivity {
             return insets;
         });
 
+        Sweetalert pDialog = new Sweetalert(InvestorFarmsActivity.this, Sweetalert.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Processing");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gson gson = new Gson();
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create("", MediaType.get("application/json"));
+                Request request = new Request.Builder()
+                        .url(BuildConfig.URL+"/investor/load-search-farms")
+                        .post(requestBody)
+                        .build();
+
+                try {
+
+                    Response response = okHttpClient.newCall(request).execute();
+                    SearchDto searchDto = gson.fromJson(response.body().string(), SearchDto.class);
+
+                    if (searchDto.isSuccess()){
+
+                        ArrayList<InvestItemDto> investItemDtoList = searchDto.getItemList();
+                        ArrayList<InvestItem> investItemArrayList = new ArrayList<>();
+
+                        for (InvestItemDto investItemDto : investItemDtoList){
+                            List<Entry> entries = new ArrayList<>();
+                            for (ChartEntruDto chartEntruDto : investItemDto.getChartData()){
+                                entries.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                            }
+
+                            InvestItem investItem = new InvestItem();
+                            investItem.setLost(investItemDto.getLost().equals("true"));
+                            investItem.setPrice(investItemDto.getPrice());
+                            investItem.setType(investItemDto.getType());
+                            investItem.setTitle(investItemDto.getTitle());
+                            investItem.setId(investItemDto.getId());
+                            investItem.setChartData(entries);
+
+                            investItemArrayList.add(investItem);
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                investItemInflater(R.id.farmItemContainer,investItemArrayList);
+                                pDialog.cancel();
+                            }
+                        });
+
+                    }
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }).start();
+
         ImageView backButton  = findViewById(R.id.investorFarmBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,36 +128,29 @@ public class InvestorFarmsActivity extends AppCompatActivity {
             }
         });
 
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1990, 60));
-        entries.add(new Entry(1994, 30));
-        entries.add(new Entry(1998, 90));
-        entries.add(new Entry(2002, 60));
-        entries.add(new Entry(2006, 100));
-        entries.add(new Entry(2010, 70));
-        entries.add(new Entry(2014, 30));
-        entries.add(new Entry(2018, 80));
-        entries.add(new Entry(2022, 120));
+        ImageView searchButton  = findViewById(R.id.imageView23);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        ArrayList<InvestItem> investItemArrayList = new ArrayList<>();
-        investItemArrayList.add(new InvestItem("1","Rice","FDER","+2.5%","Rs.250.00",false,entries));
-        investItemArrayList.add(new InvestItem("1","Corn","KTYG","-1.5%","Rs.120.00",true,entries));
-        investItemArrayList.add(new InvestItem("1","Rice","FDER","+2.5%","Rs.250.00",false,entries));
-        investItemArrayList.add(new InvestItem("1","Corn","KTYG","-1.5%","Rs.120.00",true,entries));
-        investItemArrayList.add(new InvestItem("1","Rice","FDER","+2.5%","Rs.250.00",false,entries));
-        investItemArrayList.add(new InvestItem("1","Corn","KTYG","-1.5%","Rs.120.00",true,entries));
-        investItemArrayList.add(new InvestItem("1","Rice","FDER","+2.5%","Rs.250.00",false,entries));
-        investItemArrayList.add(new InvestItem("1","Corn","KTYG","-1.5%","Rs.120.00",true,entries));
-        investItemArrayList.add(new InvestItem("1","Rice","FDER","+2.5%","Rs.250.00",false,entries));
-        investItemArrayList.add(new InvestItem("1","Corn","KTYG","-1.5%","Rs.120.00",true,entries));
+                EditText searchTxt = findViewById(R.id.editTextText8);
+                if(!searchTxt.getText().toString().isEmpty()){
+                    searchFarm(searchTxt.getText().toString());
+                }
 
-        investItemInflater(R.id.farmItemContainer,investItemArrayList);
+
+            }
+        });
+
+
 
     }
 
     private void investItemInflater(int container,  ArrayList<InvestItem> itemArrayList){
 
         LinearLayout itemContainer = findViewById(container);
+
+        itemContainer.removeAllViews();
 
         for (InvestItem investItem : itemArrayList){
 
@@ -130,6 +200,7 @@ public class InvestorFarmsActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     Intent intent = new Intent(InvestorFarmsActivity.this, InvestorSingleFarmActivity.class);
+                    intent.putExtra("farmId",investItem.getId());
                     startActivity(intent);
 
                 }
@@ -140,4 +211,70 @@ public class InvestorFarmsActivity extends AppCompatActivity {
         }
 
     }
-}
+
+    private void searchFarm(String searchTxt){
+
+        Sweetalert pDialog = new Sweetalert(InvestorFarmsActivity.this, Sweetalert.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Searching");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gson gson = new Gson();
+                RequestDto requestDto = new RequestDto();
+                requestDto.setValue(searchTxt);
+
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(gson.toJson(requestDto),MediaType.get("application/json"));
+                Request request = new Request.Builder()
+                        .url(BuildConfig.URL+"/investor/search-farms")
+                        .post(requestBody)
+                        .build();
+
+                try {
+
+                    Response response = okHttpClient.newCall(request).execute();
+                    SearchDto searchDto = gson.fromJson(response.body().string(), SearchDto.class);
+
+                    if (searchDto.isSuccess()){
+
+                        ArrayList<InvestItemDto> investItemDtoList = searchDto.getItemList();
+                        ArrayList<InvestItem> investItemArrayList = new ArrayList<>();
+
+                        for (InvestItemDto investItemDto : investItemDtoList){
+                            List<Entry> entries = new ArrayList<>();
+                            for (ChartEntruDto chartEntruDto : investItemDto.getChartData()){
+                                entries.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                            }
+
+                            InvestItem investItem = new InvestItem();
+                            investItem.setLost(investItemDto.getLost().equals("true"));
+                            investItem.setPrice(investItemDto.getPrice());
+                            investItem.setType(investItemDto.getType());
+                            investItem.setTitle(investItemDto.getTitle());
+                            investItem.setId(investItemDto.getId());
+                            investItem.setChartData(entries);
+
+                            investItemArrayList.add(investItem);
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                investItemInflater(R.id.farmItemContainer,investItemArrayList);
+                                pDialog.cancel();
+                            }
+                        });
+
+                    }
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+
+    }}
