@@ -2,17 +2,25 @@ package com.kavindu.farmshare.farmer;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -37,12 +45,21 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.MainActivity;
+import com.kavindu.farmshare.NotificationActivity;
 import com.kavindu.farmshare.R;
 import com.kavindu.farmshare.dto.ChartEntruDto;
 import com.kavindu.farmshare.dto.FarmerHomeDto;
@@ -53,6 +70,7 @@ import com.kavindu.farmshare.dto.SeasonStartDto;
 import com.kavindu.farmshare.dto.SoilReportDto;
 import com.kavindu.farmshare.dto.StockAllocationTableItemDto;
 import com.kavindu.farmshare.dto.UserDto;
+import com.kavindu.farmshare.model.SQLiteHelper;
 import com.timqi.sectorprogressview.ColorfulRingProgressView;
 
 import java.io.IOException;
@@ -63,8 +81,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import okhttp3.MediaType;
@@ -103,10 +123,19 @@ public class FarmerHomeFragment extends Fragment {
     String startDate = null;
     String endDate = null;
 
+    String farmName = "";
+
     DatePickerDialog datePickerDialog;
 
     TextView farmProgressText;
     LinearLayout farmProgressButton;
+
+    private ListenerRegistration investorListener;
+    private ListenerRegistration commenListener;
+
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    AtomicBoolean isInitialLoad = new AtomicBoolean(true);
+    AtomicBoolean isInitialLoadInvestor = new AtomicBoolean(true);
 
 
 
@@ -115,6 +144,61 @@ public class FarmerHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_farmer_home, container, false);
+
+
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user",null);
+
+        Gson gson = new Gson();
+        UserDto userDto = gson.fromJson(userJson, UserDto.class);
+
+
+
+        //firebase snapshot listener for commen
+        commenListener = firestore.collection("commen")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("FarmShareLog", "Listen failed.", error);
+                            return;
+                        }
+
+                        firebaseNotification(snapshots,view);
+
+                    }
+                });
+
+
+
+        //firebase snapshot listener for investor
+        investorListener = firestore.collection("farmer")
+                .whereEqualTo("userId", String.valueOf(userDto.getId()))
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("FarmShareLog", "Listen failed.", error);
+                            return;
+                        }
+
+                        firebaseNotificationInvestor(snapshots,view);
+
+                    }
+                });
+
+
+        ImageView notificationButton = view.findViewById(R.id.imageView7);
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View viewClick) {
+
+                Intent intent = new Intent(view.getContext(), NotificationActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         crpv1 = (ColorfulRingProgressView) view.findViewById(R.id.crpv);
         crpv1.setPercent(75);
@@ -475,6 +559,8 @@ public class FarmerHomeFragment extends Fragment {
     }
 
     private void updateData(FarmerHomeDto farmerHomeDto,View parent){
+
+        farmName = farmerHomeDto.getFarmName();
 
         int percentage = (int) ((farmerHomeDto.getRiskScore() * 100) / 200);
 
@@ -1006,6 +1092,28 @@ public class FarmerHomeFragment extends Fragment {
 
                     if (responseDto.isSuccess()){
                         loadFarmData(farmId,parent);
+
+                        String text = "Exciting news! farm "+farmName+" has moved to the "+status+" stage. Stay tuned for progress updates!";
+
+                        HashMap<String,String> document = new HashMap<>();
+                        document.put("title","Farm Status Updated!");
+                        document.put("text",text);
+
+                        firestore.collection("commen").add(document)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.i("FarmShareLog","inserted");
+                                    }
+                                })
+
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("FarmShareLog","insert fail");
+                                    }
+                                });
+
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -1035,6 +1143,153 @@ public class FarmerHomeFragment extends Fragment {
             }
         }).start();
 
+    }
+
+    private void firebaseNotification(QuerySnapshot snapshots,View parent){
+        if (snapshots != null) {
+            for (DocumentChange dc : snapshots.getDocumentChanges()) {
+
+                if (isInitialLoad.get()) {
+                    continue;
+                }
+
+                if (dc.getType().equals(DocumentChange.Type.ADDED)) {
+
+                    DocumentSnapshot document = dc.getDocument();
+                    String title = document.getString("title");
+                    String text = document.getString("text");
+
+                    SQLiteHelper sqLiteHelper = new SQLiteHelper(parent.getContext(), "farmShareFarmer.db", null, 1);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            SQLiteDatabase sqLiteDatabase = sqLiteHelper.getWritableDatabase();
+
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put("title",title);
+                            contentValues.put("text",text);
+
+                            long id = sqLiteDatabase.insert("notification",null,contentValues);
+                            Log.i("FarmShareLog","Sqlite id : "+String.valueOf(id));
+
+                            sqLiteDatabase.close();
+
+                        }
+                    }).start();
+
+                    //notification
+                    NotificationManager notificationManager = requireContext().getSystemService(NotificationManager.class);
+
+                    if (notificationManager == null) {
+                        Log.e("NotificationError", "NotificationManager is null");
+                        return;
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel notificationChannel = new NotificationChannel(
+                                "C1",
+                                "Channel1",
+                                NotificationManager.IMPORTANCE_HIGH
+                        );
+                        notificationManager.createNotificationChannel(notificationChannel);
+                    }
+
+                    Notification notification = new NotificationCompat.Builder(requireContext(), "C1")
+                            .setContentTitle(title)
+                            .setContentText(text)
+                            .setSmallIcon(R.drawable.newlogo2)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setAutoCancel(true)
+                            .build();
+
+                    notificationManager.notify(1, notification);
+                }
+            }
+
+            isInitialLoad.set(false);
+        }
+    }
+
+    private void firebaseNotificationInvestor(QuerySnapshot snapshots,View parent){
+        if (snapshots != null) {
+            for (DocumentChange dc : snapshots.getDocumentChanges()) {
+
+                if (isInitialLoadInvestor.get()) {
+                    continue;
+                }
+
+                if (dc.getType().equals(DocumentChange.Type.ADDED)) {
+
+                    DocumentSnapshot document = dc.getDocument();
+                    String title = document.getString("title");
+                    String text = document.getString("text");
+
+                    SQLiteHelper sqLiteHelper = new SQLiteHelper(parent.getContext(), "farmShareFarmer.db", null, 1);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            SQLiteDatabase sqLiteDatabase = sqLiteHelper.getWritableDatabase();
+
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put("title",title);
+                            contentValues.put("text",text);
+
+                            long id = sqLiteDatabase.insert("notification",null,contentValues);
+                            Log.i("FarmShareLog","Sqlite id : "+String.valueOf(id));
+
+                            sqLiteDatabase.close();
+
+                        }
+                    }).start();
+
+                    //notification
+                    NotificationManager notificationManager = requireContext().getSystemService(NotificationManager.class);
+
+                    if (notificationManager == null) {
+                        Log.e("NotificationError", "NotificationManager is null");
+                        return;
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel notificationChannel = new NotificationChannel(
+                                "C1",
+                                "Channel1",
+                                NotificationManager.IMPORTANCE_HIGH
+                        );
+                        notificationManager.createNotificationChannel(notificationChannel);
+                    }
+
+                    Notification notification = new NotificationCompat.Builder(requireContext(), "C1")
+                            .setContentTitle(title)
+                            .setContentText(text)
+                            .setSmallIcon(R.drawable.newlogo2)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setAutoCancel(true)
+                            .build();
+
+                    notificationManager.notify(1, notification);
+                }
+            }
+
+            isInitialLoadInvestor.set(false);
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (investorListener != null) {
+            investorListener.remove();
+        }
+
+        if (commenListener != null) {
+            commenListener.remove();
+        }
     }
 
 }

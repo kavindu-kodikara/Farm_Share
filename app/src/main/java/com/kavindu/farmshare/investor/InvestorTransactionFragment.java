@@ -1,6 +1,7 @@
 package com.kavindu.farmshare.investor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.Gson;
 import com.kavindu.farmshare.BuildConfig;
+import com.kavindu.farmshare.NotificationActivity;
 import com.kavindu.farmshare.R;
 import com.kavindu.farmshare.dto.RequestDto;
 import com.kavindu.farmshare.dto.TransactionDto;
@@ -58,6 +60,17 @@ public class InvestorTransactionFragment extends Fragment {
                 if (getActivity() instanceof InvestorMainActivity) {
                     ((InvestorMainActivity) getActivity()).openDrawer();
                 }
+            }
+        });
+
+        ImageView notificationButton = view.findViewById(R.id.investorTransactionNotification);
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View viewClick) {
+
+                Intent intent = new Intent(view.getContext(), NotificationActivity.class);
+                startActivity(intent);
+
             }
         });
 

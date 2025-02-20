@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kavindu.farmshare.BuildConfig;
+import com.kavindu.farmshare.HumanVerifyActivity;
 import com.kavindu.farmshare.R;
 import com.kavindu.farmshare.dto.ResponseDto;
 import com.kavindu.farmshare.dto.UserDto;
@@ -172,7 +173,8 @@ public class FarmerSignInActivity extends AppCompatActivity {
                                         throw new RuntimeException(e);
                                     }
 
-                                    Intent intent = new Intent(FarmerSignInActivity.this,FarmerMainActivity.class);
+                                    Intent intent = new Intent(FarmerSignInActivity.this, HumanVerifyActivity.class);
+                                    intent.putExtra("type","Farmer");
                                     startActivity(intent);
 
                                 }else {

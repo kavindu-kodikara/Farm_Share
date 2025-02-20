@@ -109,6 +109,7 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
+                        android:enabled="false"
                         android:hint="@string/mobile_hint"
                         android:inputType="phone"
                         android:textSize="16sp" />

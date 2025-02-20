@@ -234,5 +234,12 @@
     <string name="invoice_3">24 Jan, 2025</string>
     <string name="invoice_4">Print</string>
 
+    <string name="noti_1">Notification</string>
+    <string name="noti_2">Title</string>
+
+    <string name="verify_1">Human Verification</string>
+    <string name="verify_2">Cover your phone\'s light sensor to verify you are human</string>
+    <string name="verify_3">Let\'s start</string>
+
 
 </resources>

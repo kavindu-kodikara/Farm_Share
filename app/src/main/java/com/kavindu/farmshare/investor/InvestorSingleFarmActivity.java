@@ -52,8 +52,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.gson.Gson;
 import com.kavindu.farmshare.BuildConfig;
+import com.kavindu.farmshare.NotificationActivity;
 import com.kavindu.farmshare.R;
 import com.kavindu.farmshare.dto.ChartEntruDto;
 import com.kavindu.farmshare.dto.RequestDto;
@@ -76,6 +78,8 @@ import okhttp3.Response;
 import taimoor.sultani.sweetalert2.Sweetalert;
 
 public class InvestorSingleFarmActivity extends AppCompatActivity {
+
+
 
     private GoogleMap map;
     private int farmId;
@@ -108,6 +112,16 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
         View buyView = getLayoutInflater().inflate(R.layout.fragment_stock_buy1,null);
         View investedView = getLayoutInflater().inflate(R.layout.fragment_stock_buy2,null);
 
+        ImageView notificationButton = findViewById(R.id.investorSingleFarmNotification);
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View viewClick) {
+
+                Intent intent = new Intent(InvestorSingleFarmActivity.this, NotificationActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         //load data
         Sweetalert pDialog = new Sweetalert(InvestorSingleFarmActivity.this, Sweetalert.PROGRESS_TYPE);

@@ -1,10 +1,16 @@
 package com.kavindu.farmshare.investor;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,11 +27,24 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.kavindu.farmshare.BuildConfig;
 import com.kavindu.farmshare.R;
@@ -34,10 +53,13 @@ import com.kavindu.farmshare.dto.RequestDto;
 import com.kavindu.farmshare.dto.ResponseDto;
 import com.kavindu.farmshare.dto.StockPageLoadDto;
 import com.kavindu.farmshare.dto.UserDto;
+import com.kavindu.farmshare.model.SQLiteHelper;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import lk.payhere.androidsdk.PHConfigs;
 import lk.payhere.androidsdk.PHConstants;
@@ -64,6 +86,11 @@ public class StockBuyActivity extends AppCompatActivity {
     TextView farmName;
     TextView stockPrice;
     EditText minStock;
+
+    private ListenerRegistration investorListener;
+
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    AtomicBoolean isInitialLoadInvestor = new AtomicBoolean(true);
 
     PaymentDto paymentDto = new PaymentDto();
 
@@ -102,6 +129,28 @@ public class StockBuyActivity extends AppCompatActivity {
                                             ResponseDto responseDto = gson.fromJson(httpResponse.body().string(), ResponseDto.class);
 
                                             if(responseDto.isSuccess()){
+
+                                                String text = "Congrats! You’ve successfully invested in farm "+farmName.getText().toString()+". Watch your stocks grow! ";
+
+                                                HashMap<String,String> document = new HashMap<>();
+                                                document.put("title","Investment Successful!");
+                                                document.put("text",text);
+                                                document.put("userId",String.valueOf(userDto.getId()));
+
+                                                firestore.collection("investor").add(document)
+                                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                            @Override
+                                                            public void onSuccess(DocumentReference documentReference) {
+                                                                Log.i("FarmShareLog","inserted");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.e("FarmShareLog","insert fail");
+                                                            }
+                                                        });
+
                                                 runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
@@ -146,6 +195,29 @@ public class StockBuyActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("com.kavindu.farmshare.data", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user",null);
+
+        Gson gson = new Gson();
+        UserDto user = gson.fromJson(userJson, UserDto.class);
+
+        //firebase snapshot listener for investor
+        investorListener = firestore.collection("investor")
+                .whereEqualTo("userId", String.valueOf(user.getId()))
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("FarmShareLog", "Listen failed.", error);
+                            return;
+                        }
+
+                        firebaseNotificationInvestor(snapshots);
+
+                    }
+                });
 
         farmId = getIntent().getStringExtra("id");
 
@@ -348,5 +420,78 @@ public class StockBuyActivity extends AppCompatActivity {
 
         payHareLauncher.launch(intent);
     }
+    private void firebaseNotificationInvestor(QuerySnapshot snapshots){
+        if (snapshots != null) {
+            for (DocumentChange dc : snapshots.getDocumentChanges()) {
 
+                if (isInitialLoadInvestor.get()) {
+                    continue;
+                }
+
+                if (dc.getType().equals(DocumentChange.Type.ADDED)) {
+
+                    DocumentSnapshot document = dc.getDocument();
+                    String title = document.getString("title");
+                    String text = document.getString("text");
+
+                    SQLiteHelper sqLiteHelper = new SQLiteHelper(StockBuyActivity.this, "farmShare.db", null, 1);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            SQLiteDatabase sqLiteDatabase = sqLiteHelper.getWritableDatabase();
+
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put("title",title);
+                            contentValues.put("text",text);
+
+                            long id = sqLiteDatabase.insert("notification",null,contentValues);
+                            Log.i("FarmShareLog","Sqlite id : "+String.valueOf(id));
+
+                            sqLiteDatabase.close();
+
+                        }
+                    }).start();
+
+                    //notification
+                    NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+                    if (notificationManager == null) {
+                        Log.e("NotificationError", "NotificationManager is null");
+                        return;
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel notificationChannel = new NotificationChannel(
+                                "C1",
+                                "Channel1",
+                                NotificationManager.IMPORTANCE_HIGH
+                        );
+                        notificationManager.createNotificationChannel(notificationChannel);
+                    }
+
+                    Notification notification = new NotificationCompat.Builder(StockBuyActivity.this, "C1")
+                            .setContentTitle(title)
+                            .setContentText(text)
+                            .setSmallIcon(R.drawable.newlogo2)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setAutoCancel(true)
+                            .build();
+
+                    notificationManager.notify(1, notification);
+                }
+            }
+
+            isInitialLoadInvestor.set(false);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (investorListener != null) {
+            investorListener.remove();
+        }
+    }
 }

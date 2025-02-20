@@ -1,6 +1,7 @@
 package com.kavindu.farmshare.investor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -23,17 +24,22 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kavindu.farmshare.BuildConfig;
+import com.kavindu.farmshare.NotificationActivity;
 import com.kavindu.farmshare.R;
 import com.kavindu.farmshare.dto.ResponseDto;
 import com.kavindu.farmshare.dto.UserDto;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -52,6 +58,7 @@ public class InvestorProfileFragment extends Fragment {
     EditText password;
     EditText rePassword;
     Uri profileImageUri;
+
 
     public InvestorProfileFragment() {
         // Required empty public constructor
@@ -131,6 +138,19 @@ public class InvestorProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 profileImagePickerLauncher.launch("image/*");
+            }
+        });
+
+        ImageView notificationButton = view.findViewById(R.id.investorProfileNotification);
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View viewClick) {
+
+                Intent intent = new Intent(view.getContext(), NotificationActivity.class);
+                startActivity(intent);
+
+
+
             }
         });
 
