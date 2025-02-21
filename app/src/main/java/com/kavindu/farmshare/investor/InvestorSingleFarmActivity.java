@@ -23,6 +23,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -62,6 +63,7 @@ import com.kavindu.farmshare.dto.RequestDto;
 import com.kavindu.farmshare.dto.SingleFarmDto;
 import com.kavindu.farmshare.dto.UserDto;
 import com.kavindu.farmshare.farmer.FarmerAddFarmActivity;
+import com.kavindu.farmshare.farmer.FarmerRiskReviewActivity;
 import com.timqi.sectorprogressview.ColorfulRingProgressView;
 
 import java.io.IOException;
@@ -100,6 +102,16 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
         });
 
         String id = getIntent().getStringExtra("farmId");
+
+        ConstraintLayout riskButton = findViewById(R.id.riskContainerInvestor);
+        riskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InvestorSingleFarmActivity.this, FarmerRiskReviewActivity.class);
+                intent.putExtra("id",Integer.parseInt(id));
+                startActivity(intent);
+            }
+        });
 
         if (id == null){
             Intent intent = new Intent(InvestorSingleFarmActivity.this,InvestorMainActivity.class);

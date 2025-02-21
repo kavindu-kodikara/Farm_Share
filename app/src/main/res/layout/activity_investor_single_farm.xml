@@ -265,6 +265,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/riskContainerInvestor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -303,7 +304,6 @@
                     app:percent="75"
                     app:startAngle="0"
                     app:strokeWidth="15dp" />
-
 
 
                 <TextView
