@@ -75,7 +75,7 @@
     <string name="add_farm_farm_name">Enter farm name</string>
     <string name="add_farm_farm_size">Farm Size</string>
     <string name="add_farm_farm_size_hint">2.5 ha</string>
-    <string name="add_farm_avg_income">Avg Income</string>
+    <string name="add_farm_avg_income">Avg Yield</string>
     <string name="add_farm_avg_income_hint">2500 Kg</string>
     <string name="add_farm_min_stock">Min Invest</string>
     <string name="add_farm_min_stock_hint">S 10</string>

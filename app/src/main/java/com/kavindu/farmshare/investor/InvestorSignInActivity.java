@@ -3,6 +3,7 @@ package com.kavindu.farmshare.investor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -33,6 +34,7 @@ import com.kavindu.farmshare.dto.ResponseDto;
 import com.kavindu.farmshare.dto.UserDto;
 import com.kavindu.farmshare.farmer.FarmerMainActivity;
 import com.kavindu.farmshare.farmer.FarmerSignInActivity;
+import com.kavindu.farmshare.model.SQLiteHelper;
 
 import java.io.IOException;
 
@@ -167,6 +169,22 @@ public class InvestorSignInActivity extends AppCompatActivity {
                                                     .show();
                                         }
                                     });
+
+                                    SQLiteHelper sqLiteHelper = new SQLiteHelper(InvestorSignInActivity.this,"farmShare.db",null,1);
+                                    SQLiteDatabase sqLiteDatabase = sqLiteHelper.getWritableDatabase();
+
+                                    SQLiteHelper sqLiteHelper2 = new SQLiteHelper(InvestorSignInActivity.this,"farmShareFarmer.db",null,1);
+                                    SQLiteDatabase sqLiteDatabase2 = sqLiteHelper2.getWritableDatabase();
+
+                                    if (sqLiteDatabase != null){
+                                        sqLiteDatabase.execSQL("DELETE FROM `notification`");
+                                    }
+
+                                    if (sqLiteDatabase2 != null){
+                                        sqLiteDatabase2.execSQL("DELETE FROM `notification`");
+                                    }
+
+
 
                                     try {
                                         Thread.sleep(500);

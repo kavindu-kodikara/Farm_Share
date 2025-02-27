@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,12 +19,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -89,6 +92,7 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
     private List<Entry> monthData = new ArrayList<>();
     private List<Entry> seasonData = new ArrayList<>();
     private boolean isPriceDrop = false;
+    private static final int REQUEST_CALL_PERMISSION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +199,8 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
 
                                 isPriceDrop = singleFarmDto.isDrop();
 
+                                String mobile = "☎ "+singleFarmDto.getMobile();
+
                                 codeName.setText(singleFarmDto.getCodeName());
                                 farmname.setText(singleFarmDto.getFarmName());
                                 stockPrice1.setText(singleFarmDto.getStockPrice());
@@ -206,7 +212,7 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
                                 cropTypeImg.setImageResource(singleFarmDto.getFarmType().equals("Rice") ? R.drawable.rice : R.drawable.corn);
                                 avgIncomePrice.setText(singleFarmDto.getAvgIncome());
                                 ownerName.setText(singleFarmDto.getOwnerName());
-                                ownerDate.setText(singleFarmDto.getOwnerDate());
+                                ownerDate.setText(mobile);
                                 seasonMonth.setText(singleFarmDto.getSeasonMonths());
                                 farmSize.setText(singleFarmDto.getLandSize());
                                 avgYield.setText(singleFarmDto.getAvgYield());
@@ -220,6 +226,33 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
 
                                 LatLng latLng = new LatLng(lat,lng);
                                 loadMap(latLng);
+
+                                ownerDate.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        String number = "tel:"+singleFarmDto.getMobile();
+
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                            if (ActivityCompat.checkSelfPermission(InvestorSingleFarmActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                                                ActivityCompat.requestPermissions(InvestorSingleFarmActivity.this, new String[]{android.Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
+                                            } else {
+                                                Intent intent = new Intent(Intent.ACTION_DIAL, android.net.Uri.parse(number));
+                                                startActivity(intent);
+
+                                            }
+                                        } else {
+
+                                            Intent intent = new Intent(Intent.ACTION_DIAL, android.net.Uri.parse(number));
+                                            startActivity(intent);
+                                        }
+
+
+
+
+                                    }
+                                });
 
 
                                 if(singleFarmDto.getProfileImg() != null){
@@ -415,6 +448,19 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CALL_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, dial the number
+
+            } else {
+                Toast.makeText(this, "Permission denied to make calls", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void loadChart(List<Entry> entries, boolean isLost) {
