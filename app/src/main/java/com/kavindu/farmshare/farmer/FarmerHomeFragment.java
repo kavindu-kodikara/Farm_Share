@@ -889,9 +889,14 @@ public class FarmerHomeFragment extends Fragment {
             farmProgressButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View viewClick) {
-                    updateFarmStatus("Completed",parent);
-                    farmProgressButton.setBackground(ContextCompat.getDrawable(parent.getContext(),R.drawable.gradient_compleat));
-                    farmProgressText.setText("Completed");
+
+                    Intent intent =  new Intent(parent.getContext(), FarmerPaymentActivity.class);
+                    intent.putExtra("id",farmId);
+                    startActivity(intent);
+
+//                    updateFarmStatus("Completed",parent);
+//                    farmProgressButton.setBackground(ContextCompat.getDrawable(parent.getContext(),R.drawable.gradient_compleat));
+//                    farmProgressText.setText("Completed");
 
                 }
             });
@@ -901,15 +906,15 @@ public class FarmerHomeFragment extends Fragment {
             farmProgressButton.setBackground(ContextCompat.getDrawable(parent.getContext(),R.drawable.gradient_compleat));
 
             farmProgressButton.setOnClickListener(null);
-            farmProgressButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View viewClick) {
-                    updateFarmStatus("Start",parent);
-                    farmProgressButton.setBackground(ContextCompat.getDrawable(parent.getContext(),R.drawable.gradient_start));
-                    farmProgressText.setText("Start");
-
-                }
-            });
+//            farmProgressButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View viewClick) {
+//                    updateFarmStatus("Start",parent);
+//                    farmProgressButton.setBackground(ContextCompat.getDrawable(parent.getContext(),R.drawable.gradient_start));
+//                    farmProgressText.setText("Start");
+//
+//                }
+//            });
 
 
         }

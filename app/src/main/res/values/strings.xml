@@ -241,5 +241,9 @@
     <string name="verify_2">Cover your phone\'s light sensor to verify you are human</string>
     <string name="verify_3">Let\'s start</string>
 
+    <string name="farmer_buy_3">Rs. 0 .00</string>
+    <string name="farmer_buy_4">Make payment</string>
+    <string name="farmer_buy_5">You must deliver crops to investors within 7 days for crop-based returns</string>
+
 
 </resources>
