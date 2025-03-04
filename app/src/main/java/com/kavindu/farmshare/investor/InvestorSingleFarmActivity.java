@@ -273,16 +273,22 @@ public class InvestorSingleFarmActivity extends AppCompatActivity {
                                     stockValue.setTextColor(ContextCompat.getColor(InvestorSingleFarmActivity.this,R.color.green));
                                 }
 
+                                int wi = 1;
                                 for (ChartEntruDto chartEntruDto : singleFarmDto.getWeekChartData()){
-                                    weekData.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                                    weekData.add(new Entry(wi, (float) chartEntruDto.getValue()));
+                                    wi++;
                                 }
 
+                                int mi = 1;
                                 for (ChartEntruDto chartEntruDto : singleFarmDto.getMonthChartData()){
-                                    monthData.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                                    monthData.add(new Entry(mi, (float) chartEntruDto.getValue()));
+                                    mi++;
                                 }
 
+                                int si = 1;
                                 for (ChartEntruDto chartEntruDto : singleFarmDto.getSeasonChartData()){
-                                    seasonData.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                                    seasonData.add(new Entry(si, (float) chartEntruDto.getValue()));
+                                    si++;
 
                                 }
 

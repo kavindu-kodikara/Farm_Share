@@ -166,8 +166,10 @@ public class InvestorFarmsActivity extends AppCompatActivity {
 
                         for (InvestItemDto investItemDto : investItemDtoList){
                             List<Entry> entries = new ArrayList<>();
+                            int i = 1;
                             for (ChartEntruDto chartEntruDto : investItemDto.getChartData()){
-                                entries.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                                entries.add(new Entry(i, (float) chartEntruDto.getValue()));
+                                i++;
                             }
 
                             InvestItem investItem = new InvestItem();

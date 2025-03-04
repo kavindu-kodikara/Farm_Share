@@ -639,8 +639,10 @@ public class FarmerHomeFragment extends Fragment {
         //load chart
         List<Entry> entries = new ArrayList<>();
 
+        int ci = 1;
         for (ChartEntruDto chartEntruDto : farmerHomeDto.getChartEntryList()){
-            entries.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+            entries.add(new Entry(ci, (float) chartEntruDto.getValue()));
+            ci++;
         }
 
         loadChart(parent,entries, farmerHomeDto.isPriceDrop());

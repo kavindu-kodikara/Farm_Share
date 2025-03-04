@@ -266,9 +266,11 @@ public class InvestorHomeFragment extends Fragment {
                             investItem.setLost(investItemDto.getLost().equals("true"));
 
                             List<Entry> chartData = new ArrayList<>();
-
+                            int i = 1;
                             for (ChartEntruDto chartEntruDto : investItemDto.getChartData()){
-                                chartData.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+
+                                chartData.add(new Entry(i, (float) chartEntruDto.getValue()));
+                                i++;
                             }
 
                             investItem.setChartData(chartData);
@@ -292,9 +294,10 @@ public class InvestorHomeFragment extends Fragment {
                             investItem.setLost(investItemDto.getLost().equals("true"));
 
                             List<Entry> chartData = new ArrayList<>();
-
+                            int shi = 1;
                             for (ChartEntruDto chartEntruDto : investItemDto.getChartData()){
-                                chartData.add(new Entry(chartEntruDto.getDate(), (float) chartEntruDto.getValue()));
+                                chartData.add(new Entry(shi, (float) chartEntruDto.getValue()));
+                                shi++;
                             }
 
                             investItem.setChartData(chartData);
