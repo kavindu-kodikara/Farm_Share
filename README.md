@@ -34,12 +34,18 @@ FarmShare consists of **three user roles**:
 
 ---
 
+### Project Repositories
+- **Frontend Repository (Android)**: [Link to Frontend Android Repo](https://github.com/kavindu-kodikara/Farm_Share.git)  
+- **Backend Repository (Spring Boot)**: [Link to Backend Springboot Repo](https://github.com/kavindu-kodikara/Farm_Share_Backend.git)
+
+---
+
 ## Features Breakdown
 
 ### **Welcome Page**
 - Contains two buttons to navigate between **Investor** and **Farmer** sections.
 
-<img src="assets/img/welcomePage.png" alt="Welcome Page" width="300"/>
+<img src="images/Screenshot 2025-03-05 094805.png" alt="Welcome Page" width="300"/>
 
 ---
 
@@ -48,7 +54,7 @@ FarmShare consists of **three user roles**:
 ### **1. Sign Up & Sign In**
 - Investors can register and log in with **smooth animations**.
 
-<img src="assets/img/investorSignUp.png" alt="Investor Sign Up" width="300"/>
+<img src="images/Screenshot 2025-03-05 094815.png" alt="Investor Sign Up" width="300"/><img src="images/Screenshot 2025-03-05 094825.png" alt="Investor Sign Up" width="300"/>
 
 ### **2. Investor Home**
 - Displays **most profitable farms** at the top.
@@ -57,36 +63,36 @@ FarmShare consists of **three user roles**:
 - **Stock Allocation** – Displays investment breakdown in a **pie chart**.
 - **Upcoming Payouts** – Shows expected investment returns.
 
-<img src="assets/img/investorHome.png" alt="Investor Home" width="300"/>
+<img src="images/Screenshot 2025-03-05 095435.png" alt="Investor Home" width="300"/><img src="images/Screenshot 2025-03-05 095447.png" alt="Investor Home" width="300"/><img src="images/Screenshot 2025-03-05 095503.png" alt="Investor Home" width="300"/>
 
 ### **3. Transactions Page**
 - Lists **all investment transactions** and **investment returns**.
 
-<img src="assets/img/investorTransactions.png" alt="Investor Transactions" width="300"/>
+<img src=images/Screenshot 2025-03-05 095517.png" alt="Investor Transactions" width="300"/>
 
 ### **4. Farms Page**
 - Displays **all active farms** with a **search function**.
 
-<img src="assets/img/investorFarms.png" alt="Investor Farms" width="300"/>
+<img src="images/Screenshot 2025-03-05 095619.png" alt="Investor Farms" width="300"/>
 
 ### **5. Profile Page**
 - Allows investors to **update profile picture and details**.
 
-<img src="assets/img/investorProfile.png" alt="Investor Profile" width="300"/>
+<img src="images/Screenshot 2025-03-05 095728.png" alt="Investor Profile" width="300"/>
 
 ### **6. Single Farm Page**
 - Displays **stock price trends (1 week, 1 month, current season)**.
 - Shows **farm details, owner details, farm stage (Cultivating, Growing, Harvesting, etc.), risk score, location map, and images**.
 - Includes **Buy Stock section**.
 
-<img src="assets/img/singleFarm.png" alt="Single Farm Page" width="300"/>
+<img src="images/Screenshot 2025-03-05 100326.png" alt="Single Farm Page" width="300"/><img src="images/Screenshot 2025-03-05 100337.png" alt="Single Farm Page" width="300"/>
 
 ### **7. Stock Buy Page**
 - Investors **select return type & stock amount**.
 - **PayHere payment gateway opens** for secure transactions.
 - After payment, an **invoice is generated and a notification is sent**.
 
-<img src="assets/img/stockBuy.png" alt="Stock Buy Page" width="300"/>
+<img src="images/Screenshot 2025-03-05 100631.png" alt="Stock Buy Page" width="300"/><img src="images/Screenshot 2025-03-05 100654.png" alt="Stock Buy Page" width="300"/><img src="images/Screenshot 2025-03-05 100745.png" alt="Stock Buy Page" width="300"/>
 
 ---
 
@@ -94,6 +100,8 @@ FarmShare consists of **three user roles**:
 
 ### **1. Sign Up & Sign In**
 - Same functionality as **Investor sign-in**.
+
+<img src="images/Screenshot 2025-03-05 100834.png" alt="Farmer Home" width="300"/><img src="images/Screenshot 2025-03-05 100844.png" alt="Farmer Home" width="300"/>
 
 ### **2. Farmer Home**
 - **Chips to navigate between added farms**.
@@ -103,20 +111,22 @@ FarmShare consists of **three user roles**:
 - **Investor list & stock release section**.
 - **Upload soil details & soil report document**.
 
-<img src="assets/img/farmerHome.png" alt="Farmer Home" width="300"/>
+<img src="images/Screenshot 2025-03-05 101236.png" alt="Farmer Home" width="300"/><img src="images/Screenshot 2025-03-05 101928.png" alt="Farmer Home" width="300"/><img src="images/Screenshot 2025-03-05 102050.png" alt="Farmer Home" width="300"/>
 
 ### **3. My Farms Page**
 - Lists **all farms owned by the logged-in farmer**.
 
-<img src="assets/img/myFarms.png" alt="My Farms" width="300"/>
+<img src="images/Screenshot 2025-03-05 102125.png" alt="My Farms" width="300"/>
 
 ### **4. Add Farm Page**
 - Farmers provide **farm name, crop type, size, avg yield, min investment stocks, ownership details, farm location on the map, images, and soil reports**.
 
-<img src="assets/img/addFarm.png" alt="Add Farm" width="300"/>
+<img src="images/Screenshot 2025-03-05 102458.png" alt="Add Farm" width="300"/><img src="images/Screenshot 2025-03-05 102508.png" alt="Add Farm" width="300"/><img src="images/Screenshot 2025-03-05 102515.png" alt="Add Farm" width="300"/>
 
 ### **5. Farmer Profile Page**
 - Same functionality as **Investor Profile**.
+
+<img src="images/Screenshot 2025-03-05 102536.png" alt="My Farms" width="300"/>
 
 ---
 
@@ -126,17 +136,17 @@ FarmShare consists of **three user roles**:
 - Admin can **approve or reject farm registration requests**.
 - Activate or deactivate farms.
 
-<img src="assets/img/adminFarmManagement.png" alt="Admin Farm Management" width="300"/>
+<img src="images/Screenshot 2025-03-05 102729.png" alt="Admin Farm Management" />
 
 ### **2. User Management**
 - Admin can **block or activate users**.
 
-<img src="assets/img/adminUserManagement.png" alt="Admin User Management" width="300"/>
+<img src="images/Screenshot 2025-03-05 102748.png" alt="Admin User Management" />
 
 ### **3. Payments**
 - After the farm season ends and farmers pay investors, admin can **approve or reject payment requests**.
 
-<img src="assets/img/adminPayments.png" alt="Admin Payments" width="300"/>
+<img src="images/Screenshot 2025-03-05 102808.png" alt="Admin Payments" />
 
 ---
 
