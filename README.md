@@ -68,7 +68,7 @@ FarmShare consists of **three user roles**:
 ### **3. Transactions Page**
 - Lists **all investment transactions** and **investment returns**.
 
-<img src=images/Screenshot 2025-03-05 095517.png" alt="Investor Transactions" width="300"/>
+<img src="images/Screenshot 2025-03-05 095517.png" alt="Investor Transactions" width="300"/>
 
 ### **4. Farms Page**
 - Displays **all active farms** with a **search function**.
